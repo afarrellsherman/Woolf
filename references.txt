@@ -1,0 +1,8 @@
+﻿Eddy, S.R. (2018). HMMER User’s Guide. In Biological sequence analysis using hidden Markov models, t.H.d. team, ed. (Howard Hughes Medical Institute).
+Dawson, N.L., Lewis, T.E., Das, S., Lees, J.G., Lee, D., Ashford, P., Orengo, C.A., and Sillitoe, I. (2017). CATH: an expanded resource to predict protein function through structure and sequence. Nucleic Acids Res 45, D289-D295.
+Fetrow, J.S., and Babbitt, P.C. (2018). New computational approaches to understanding molecular protein function. PLoS Comput Biol 14, e1005756.
+Kaminski, J., Gibson, M.K., Franzosa, E.A., Segata, N., Dantas, G., and Huttenhower, C. (2015). High-Specificity Targeted Functional Profiling in Microbial Communities with ShortBRED. PLoS Comput Biol 11, e1004557.
+Kundu, S. (2018). Mathematical Basis of Predicting Dominant Function in Protein Sequences by a Generic HMM-ANN Algorithm. Acta Biotheor 66, 135-148.
+Lee, D., Das, S., Dawson, N.L., Dobrijevic, D., Ward, J., and Orengo, C. (2016). Novel Computational Protocols for Functionally Classifying and Characterising Serine Beta-Lactamases. PLoS Comput Biol 12, e1004926.
+Prakash, A., Jeffryes, M., Bateman, A., and Finn, R.D. (2017). The HMMER Web Server for Protein Sequence Similarity Search. Curr Protoc Bioinformatics 60, 3 15 11-13 15 23.
+Zhang, Y., and Sun, Y. (2011). HMM-FRAME: accurate protein domain classification for metagenomic sequences containing frameshift errors. BMC Bioinformatics 12, 198.
