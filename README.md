@@ -1,10 +1,10 @@
-# Woolf: Gene Differentiation by Machine Learning
+#  Gene Differentiation by Machine Learning
 
-Woolf is a machine learning program to classify gene functions.  It is still under development, and this document provides both an overview of what the project will be when complete, and a list of possible next steps/questions.
+This is a machine learning program to classify gene functions.  It is still under development, and this document provides both an overview of what the project will be when complete, and a list of possible next steps/questions.
 
 ## Overview
 
-Woolf takes two lists of genes with some distinguishing characteristic, uses machine learning to categorize the difference between them, and then parses through a new unidentified gene set making predictions about which category genes belong to.   When complete the tool will be able to identify patterns in the data too complicated for humans to parse, and use them to identify potential functions in unidentified genes.
+The modeltakes two lists of genes with some distinguishing characteristic, uses machine learning to categorize the difference between them, and then parses through a new unidentified gene set making predictions about which category genes belong to.   When complete the tool will be able to identify patterns in the data too complicated for humans to parse, and use them to identify potential functions in unidentified genes.
 
 ### Algorithms
 
@@ -17,7 +17,7 @@ Functionality may be implemented for the following machine learning alrogithms:
 
 ## Running Instructions
 
-### Building Woolf Model:
+### Building the Model:
 
 Run the following on the comand line, with both gene set files and the script in the current working directory:
 ```
@@ -47,6 +47,33 @@ Inputs:
 * GeneSet_Unknown: multi-sequence amino acid FASTA 
 
 Note that GeneSet_Unknown should contain genes of the same class as the genes used to build the model.
+
+
+## Project Timeline
+
+### October
+ -[x] **10/20:** Setup Github 
+ -[x] **10/29:** Basic algorithm research done
+
+### November
+ -[x] **11/5:** Select initial algorithm and dataset
+ -[x] **11/5:** Lab meeting presentation
+ -[ ] **11/9:** Download and format inital dataset
+ -[ ] **11/12:** Finish script outline - building model
+ -[ ] **11/30:** Completed HMM model
+
+### December
+ -[ ] **Early December:** Thesis presentation to committee
+
+### Next Semester
+ -[ ] **January:** test model on new datasets
+ -[ ] **Feburary:** add new machine learning algorithms
+ -[ ] **March/April:** Finish writing and present!
+
+
+# References
+
+See [references.txt](https://github.com/afarrellsherman/Woolf/blob/master/references.txt)
 
 
 ### Notes on how to make things work in .md files
