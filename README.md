@@ -52,23 +52,23 @@ Note that GeneSet_Unknown should contain genes of the same class as the genes us
 ## Project Timeline
 
 ### October
- -[x] **10/20:** Setup Github 
- -[x] **10/29:** Basic algorithm research done
+- [x] **10/20:** Setup Github 
+- [x] **10/29:** Basic algorithm research done
 
 ### November
- -[x] **11/5:** Select initial algorithm and dataset
- -[x] **11/5:** Lab meeting presentation
- -[ ] **11/9:** Download and format inital dataset
- -[ ] **11/12:** Finish script outline - building model
- -[ ] **11/30:** Completed HMM model
+- [x] **11/5:** Select initial algorithm and dataset
+- [x] **11/5:** Lab meeting presentation
+- [ ] **11/9:** Download and format inital dataset
+- [ ] **11/12:** Finish script outline - building model
+- [ ] **11/30:** Completed HMM model
 
 ### December
- -[ ] **Early December:** Thesis presentation to committee
+- [ ] **Early December:** Thesis presentation to committee
 
 ### Next Semester
- -[ ] **January:** test model on new datasets
- -[ ] **Feburary:** add new machine learning algorithms
- -[ ] **March/April:** Finish writing and present!
+- [ ] **January:** test model on new datasets
+- [ ] **Feburary:** add new machine learning algorithms
+- [ ] **March/April:** Finish writing and present!
 
 
 # References
