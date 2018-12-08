@@ -48,27 +48,14 @@ Inputs:
 
 Note that GeneSet_Unknown should contain genes of the same class as the genes used to build the model.
 
+# Lab presentations and Thesis Committee Presentations
 
-## Project Timeline
+These presentations were given to either the VKC Lab durring lab meetings, or to my thesis committee.  They contain background information, and document my working progress.
 
-### October
-- [x] **10/20:** Setup Github 
-- [x] **10/29:** Basic algorithm research done
-
-### November
-- [x] **11/5:** Select initial algorithm and dataset
-- [x] **11/5:** Lab meeting presentation
-- [ ] **11/9:** Download and format inital dataset
-- [ ] **11/12:** Finish script outline - building model
-- [ ] **11/30:** Completed HMM model
-
-### December
-- [ ] **Early December:** Thesis presentation to committee
-
-### Next Semester
-- [ ] **January:** test model on new datasets
-- [ ] **Feburary:** add new machine learning algorithms
-- [ ] **March/April:** Finish writing and present!
+* **[12/11/18 Thesis Committee Meeting](https://docs.google.com/presentation/d/1OZpYLSVLtJjkjRIWPzZq9Kgmf1haGQ5GKNgLEdJppfw/edit?usp=sharing)**: an overview of my fall semester work 
+* **[12/3/18 Machine Algorithm Research ](https://docs.google.com/presentation/d/1vzqHAOpl8-pdivN2k4VXTbsyU1kNXPKU85aiaMWQXeM/edit?usp=sharing)**: algorithms under consideration presented in lab meeting
+* **[11/5/18 Biological Background and Initial Project Plan](https://docs.google.com/presentation/d/1WPKPLAls7jK-ASeTeBcvSeus5B9hmag5wgbUsmXXgLU/edit?usp=sharing)**: the biological introduction to the project
+* **[10/2/18 Initial Project Proposals](https://docs.google.com/presentation/d/1i0C0qMyz5Mk9t9Hvk8EW0eZWVZhmnl1Se-tbBJAQS3I/edit?usp=sharing)**: the inial ideas for this project and other potential theses
 
 
 # References
