@@ -32,6 +32,7 @@ In November, signifiant changes to the structure of the thesis were proposed tha
 
 ### Feburary
 - [ ] 10th: Outline of HMM script with basic architecture
+- [ ] 10th: Draft of computational model indroduction section
 - [ ] **15th: Comparison algorithm definitions section draft written**
 - [ ] 20th: First runthrough of full HMM
 - [ ] **28th: Implementaion of my HMM compleated**

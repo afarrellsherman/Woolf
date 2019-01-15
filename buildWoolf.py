@@ -15,7 +15,7 @@ def readdata(filename):
         data.append(line)
     return data
 
-def buildModel(Agenes, Bgenes):
+def buildModel(aGenes, bGenes):
 	#code here will build machine learning model basde on input sequences
 
 def saveModel(model, modelOutFile):
@@ -24,14 +24,14 @@ def saveModel(model, modelOutFile):
 
 
 def main():
-	AgenesFile = sys.argv[1]
-    BgenesFile = sys.argv[2]
+	aGenesFile = sys.argv[1]
+    bGenesFile = sys.argv[2]
     modelOutFile = sys.argv[2]
 
-    Agenes = readdata(AgenesFile)
-    Bgenes = readdata(BgenesFile)
+    aGenes = readdata(aGenesFile)
+    bGenes = readdata(bGenesFile)
 
-    model = buildModel(Agenes, Bgenes)
+    model = buildModel(aGenes, bGenes)
 
     saveModel(model, modelOutFile)
 

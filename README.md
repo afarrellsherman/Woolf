@@ -48,7 +48,7 @@ Inputs:
 
 Note that GeneSet_Unknown should contain genes of the same class as the genes used to build the model.
 
-# Lab presentations and Thesis Committee Presentations
+## Lab presentations and Thesis Committee Presentations
 
 These presentations were given to either the VKC Lab durring lab meetings, or to my thesis committee.  They contain background information, and document my working progress.
 
@@ -58,13 +58,6 @@ These presentations were given to either the VKC Lab durring lab meetings, or to
 * **[10/2/18 Initial Project Proposals](https://docs.google.com/presentation/d/1i0C0qMyz5Mk9t9Hvk8EW0eZWVZhmnl1Se-tbBJAQS3I/edit?usp=sharing)**: the inial ideas for this project and other potential theses
 
 
-# References
+## References
 
 See [references.txt](https://github.com/afarrellsherman/Woolf/blob/master/references.txt)
-
-
-### Notes on how to make things work in .md files
-
-**This is Bold**
-*This is italics*
-[This is a link](http://squamishclimbingmagazine.ca/wp-content/uploads/2015/01/AM_IMG_9142_1-1024x683.jpg)
