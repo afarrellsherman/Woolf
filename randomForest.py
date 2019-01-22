@@ -1,7 +1,7 @@
 # ############################### #
-# kNN.py
+# randomForest.py
 # 
-# Creates a k-nearest neighbor classifier based on two gene sets
+# Creates a random forest classifier based on two gene sets
 #
 # ONGOING EDITS
 # - needs to be made modular
@@ -11,10 +11,11 @@
 # ############################### #
 
 from calculateFeatures import featureTablefromFASTA
-from sklearn import neighbors
+from sklearn.ensemble import RandomForestClassifier
 
 
-n_neighbors = 3
+nTrees = 5
+minLeafSize = 10
 
 
 def main():
@@ -29,7 +30,7 @@ def main():
 	#create array of responses
 	categories = ([1]*len(aFeatures)) + ([0]*len(bFeatures))
 
-	clf = neighbors.KNeighborsClassifier(n_neighbors, weights='uniform')
+	clf = RandomForestClassifier(n_estimators=nTrees, min_samples_leaf=minLeafSize,random_state=1)
 	clf.fit(allFeatures, categories)
 
 	#Feature Importance
@@ -45,7 +46,7 @@ def main():
 		index, data = row
 		testData.append(data)
 	
-	print("\nTesting kNN classifier:\n")
+	print("\nTesting Random Forest classifier:\n")
 	print("\tResult should be: [1 1 1 1 0 0 0 0]")
 	print("\tResult: " + str(clf.predict(testData)) + '\n')
 
