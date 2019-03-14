@@ -9,7 +9,7 @@
 # Helpful : https://github.com/hmmlearn/hmmlearn/issues/70
 #
 # 
-# Anna Farrell-Sherman 1/14/19
+# Anna Farrell-Sherman 2/8/19
 # ############################### #
 
 from calculateFeatures import readfasta
@@ -59,7 +59,7 @@ def main():
 	logprob, functionPattern = model.decode(testSequence, algorithm="viterbi")
 
 	print("\nTesting HMM classifier:\n")
-	print("\tTest Sequence: " + str(testSequence) + '\n')
+	#print("\tTest Sequence: " + testSequence + '\n')
 	print("\tResult: " + str(functionPattern) + '\n')
 
 
