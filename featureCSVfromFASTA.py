@@ -21,20 +21,7 @@ aa = ['A','R','N','D','C','E','Q','G','H','I','L','K','M','F','P','S','T','W','Y
 def readfasta(filename):
     seqs = list(SeqIO.parse(filename, "fasta"))
     return seqs
-
-# ### percentComposition - determines percent composition of a given character in a sequence
-# def percentComposition(character, sequence):
-# 	return sequence.count(character)/len(sequence)
-
-# ### aaCompositionTable - creates a percent composition table for a given set of sequences
-# def aaCompositionTable(sequences):
-# 	aaTable = []
-# 	for seq in sequences:
-# 		composition = []
-# 		for a in aa:
-# 			composition.append(percentComposition(a, seq))
-# 		aaTable.append(composition)
-# 	return aaTable
+    
 
 ### featureTable - 
 def featureTable(sequenceFiles):
