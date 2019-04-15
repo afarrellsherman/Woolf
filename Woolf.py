@@ -12,8 +12,7 @@
 
 #used to create command line inputs
 import argparse
-#import functions from other WoolfModel files
-from calculateFeatures import featureTablefromFASTA
+
 #import needed machine learning packages
 from sklearn import neighbors #for the kNN
 from sklearn.ensemble import RandomForestClassifier #for the randomforest
@@ -25,39 +24,40 @@ from sklearn.preprocessing import MinMaxScaler #minMax normalization
 import numpy as np # to read in length as float64
 
 
-def buildModel(classifierType, inputCSV):
+class Woolf:
+    def __init__ (self, classifierType):
+        self.classifierType = classifierType
 
-    #MODEL FUNCTIONS THAT IT MIGHT BE USEFUL TO CHANGE:
-    ## Scaler type
-    ## scoring method -- is ROC_AOC okay??
-    ## ranges in param_grids
-    
-	#Pipeline Component #1: Scaler
-    scaler = MinMaxScaler() #scaler to normalize the data
-    
-    #Pipline Component #2: Classifier
-    if classifierType == 'kNN':
-        clf = neighbors.KNeighborsClassifier(weights='uniform')
-        param_grid = {'clf__n_neighbors': range(1, 20)}
+        ##Default pipeline options
+        #Classifiers and Param Grids
+        if self.classifierType == 'kNN':
+            self.clf = neighbors.KNeighborsClassifier(weights='uniform')
+            self.param_grid = {'clf__n_neighbors': range(1, 20)}
+        elif self.classifierType == 'fOREST':
+            self.clf = RandomForestClassifier(random_state=42)
+            self.classifierType = {'clf__n_estimators': range(1, 20), 'clf__min_samples_leaf': range(10, 30, 5)}
+        else:
+             raise Exception("Unrecognized classifier type: " + self.classifierType)
+        #Method to use to scale the data
+        self.scaler = MinMaxScaler()
+        #scoring metric to use in classifier construction
+        self.scoringMetric = 'f1'
 
-    elif classifierType == 'fOREST':
-        clf = RandomForestClassifier(random_state=42)
-        param_grid = {'clf__n_estimators': range(1, 20), 'clf__min_samples_leaf': range(10, 30, 5)}
+    def trainModel(self, inputCSV):
+        pipe = Pipeline([('scaler', self.scaler), ('clf', self.clf)])
 
-    pipe = Pipeline([('minMax', scaler), ('clf', clf)])
+        #use gridsearch to test all values for n_neighbors
+        grid = GridSearchCV(pipe, self.param_grid, cv=5, scoring=self.scoringMetric)
 
-    #use gridsearch to test all values for n_neighbors
-    grid = GridSearchCV(pipe, param_grid, cv=5, scoring='f1')
+        #Set Up data
+        sequenceFeatureTable = pd.read_csv(inputCSV, header = 0, dtype={'Length':  np.float64})
+        seqTarget = sequenceFeatureTable['Class']
+        seqData = sequenceFeatureTable.drop(columns=['Class'])
 
-    #Set Up data
-    sequenceFeatureTable = pd.read_csv(inputCSV, header = 0, dtype={'Length':  np.float64})
-    seqTarget = sequenceFeatureTable['Class']
-    seqData = sequenceFeatureTable.drop(columns=['Class'])
+        #fit model to data
+        grid.fit(seqData, seqTarget)
 
-    #fit model to data
-    grid.fit(seqData, seqTarget)
-
-    return grid
+        return grid
 
 
 if __name__ == '__main__':
@@ -85,14 +85,20 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.kNN:
-        woolf = buildModel('kNN', args.featureTable)
+        woolf = Woolf('kNN')
     elif args.randomForest:
-        woolf = buildModel('fOREST', args.featureTable)
+        woolf = Woolf('fOREST')
     else:
         print('Please choose either kNN (-k) or Random Forest (-f)')
 
     if woolf != None:
-        print('Building kNN') if args.kNN else print('Building Random Forest')
-        print("Best Score:" + str(woolf.best_score_))
-        print("Best Params:" + str(woolf.best_params_))
+        print('Building kNN Woolf Model') if args.kNN else print('Building Random Forest Woolf Model')
+
+        results = woolf.trainModel(args.featureTable)
+
+        print("Best Score:" + str(results.best_score_))
+        print("Best Params:" + str(results.best_params_))
+
+
+
         
