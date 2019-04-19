@@ -12,6 +12,7 @@ from argparse import ArgumentParser, ArgumentTypeError
 #import needed machine learning packages
 from sklearn import neighbors #for the kNN
 from sklearn.ensemble import RandomForestClassifier #for the randomforest
+from sklearn.metrics import matthews_corrcoef, make_scorer
 
 from sklearn.model_selection import GridSearchCV # for parameter estimation
 from sklearn.pipeline import Pipeline #to allow for normalization in cross validation
@@ -24,7 +25,7 @@ from ast import literal_eval #to decode dictionaries entered for parameter grids
 import sys # for error handeling
 
 
-def buildWoolf(classifierType, pGrid, scaler, cvFolds, scoringM, nNhrs, nTrs, minL):
+def buildWoolf(classifierType, pGrid, scalerString, cvFolds, scoringM, nNhrs, nTrs, minL):
 	'''Creates the Woolf Model with all user given parameters '''
 
     #Classifiers and Param Grids
@@ -37,11 +38,14 @@ def buildWoolf(classifierType, pGrid, scaler, cvFolds, scoringM, nNhrs, nTrs, mi
 	else:
 		raise NameError("Unrecognized classifier type: " + classifierType)
 
+	scaler = scaler_selector(scalerString)
+	accM = accM_selector(scoringM)
+
     #create pipe to allow for scaling in cross-validation
 	pipe = Pipeline([('scaler', scaler), ('clf', clf)])
 
     #create grid for hyperparameter searching
-	gridModel = GridSearchCV(pipe, param_grid, cv=cvFolds, scoring=scoringM, return_train_score=True)
+	gridModel = GridSearchCV(pipe, param_grid, cv=cvFolds, scoring=accM, return_train_score=True, iid=False)
 
 	return gridModel
         
@@ -73,6 +77,8 @@ def findMisclassified(woolfModel, inputCSV):
     #Grid model to data
 	predictions = woolfModel.predict(seqData)
 
+	cmatrix = confusion_matrix(seqTarget, predictions)
+
 	misAsPos = []
 	misAsNeg = []
 	for i in range(len(seqIDs)):
@@ -81,7 +87,7 @@ def findMisclassified(woolfModel, inputCSV):
 		elif seqTarget[i] == 1 and predictions[i] == 0:
 			misAsNeg.append(seqIDs[i]) 
 
-	return misAsPos, misAsNeg
+	return misAsPos, misAsNeg, cmatrix
 
 
 def predictWoolf(woolfModel, predictCSV):
@@ -129,8 +135,27 @@ def parseRange(rangeString):
 		raise ArgumentTypeError("'" + rangeString + "' is not a valid range of numbers. Expected formats: '1' '1-10' or '1-10,2'.")
 	return res
 
+def scaler_selector(inputString):
+	'''determine which scaling type was selected'''
+	scalers = {'MinMaxScaler': MinMaxScaler(), 'StandardScaler': StandardScaler(), 
+		'MaxAbsScaler': MaxAbsScaler(), 'RobustScaler': RobustScaler(), 'None': None}
+	scaler = scalers.get(inputString , '')
+	if scaler == '': #raise error if not found
+		raise TypeError(inputString)
+	return scaler
+
+def accM_selector(inputString):
+	'''#determine which accuracy metric type was selected'''
+	accMs = {'MCC': make_scorer(matthews_corrcoef), 'f1': 'f1', 
+		'accuracy': 'accuracy', 'precision': 'precision', 'recall': 'recall'}
+	accM = accMs.get(inputString , '')
+	if accM == '': #raise error if not found
+		raise TypeError(inputString)
+	return accM
 
 if __name__ == '__main__':
+
+	#print(scaler_selector('MinMaxScaler'))
 
 	##################################################################################
 	#Default Values
@@ -138,11 +163,11 @@ if __name__ == '__main__':
 	# here instead of on the command line.  
 	##################################################################################
 	scalingType = 'MinMaxScaler' # EX: 'StandardScaler'
-	scoringMetric = 'f1' #EX: ‘roc_auc’
-	crossFolds = 3 #EX: 10
+	scoringMetric = 'MCC' #EX: ‘f1’
+	crossFolds = 5 #EX: 10
 	nNeighbors = range(1,20)
-	nTrees = range(1,20,2)
-	minLeafSize = range(3,30,3)
+	nTrees = range(1,15,2)
+	minLeafSize = range(10,30,3)
 
 	#The parameter grid can take the place of the algorithm inputs above, and allows
 	# adjustment of more parameters in the classifier algorithm
@@ -160,11 +185,11 @@ if __name__ == '__main__':
 	group.add_argument("-f", "--randomForest", action="store_true")
 
 	#kNN arguments
-	parser.add_argument("-n", "--nNeighbors", type=parseRange, help="number of neighboors for kNN classifier")
+	parser.add_argument("-n", "--nNeighbors", type=parseRange, help="number of neighboors for kNN classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
 
 	#random Forest arguments
-	parser.add_argument("-t", "--nTrees", type=parseRange, help="number of trees for random forest classifier")
-	parser.add_argument("-l", "--minLeafSize", type=parseRange, help="minimum size of leaves in each tree of the random forest classifier")
+	parser.add_argument("-t", "--nTrees", type=parseRange, help="number of trees for random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
+	parser.add_argument("-l", "--minLeafSize", type=parseRange, help="minimum size of leaves in each tree of the random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
 
 	#set up learning parameters
 	parser.add_argument("-s", "--featureScaler", help="A scikit learn scaler object to scale in the input features")
@@ -210,27 +235,16 @@ if __name__ == '__main__':
 	if args.verbose:
 		print("Cross-validation Folds: " + str(crossFolds))
 		print("Scoring Metric: " + str(scoringMetric))
-
-	#determine which scaling type was selected
-	def scaler_selector(inputString):
-		if args.verbose:
-			print("Scaler type: " + inputString)
-		scalers = {'MinMaxScaler': MinMaxScaler(), 'StandardScaler': StandardScaler(), 
-			'MaxAbsScaler': MaxAbsScaler(), 'RobustScaler': RobustScaler(), 'None': None}
-		return (scalers.get(inputString, ("ERROR: Invalid scaler type: " + inputString)))
-	scaler = scaler_selector(scalingType)
-	if isinstance(scaler, str):
-		print(scaler)
-		exit()
+		print("Scaler type: " + str(scalingType))
 
 	try:
 		#Build the model
-		woolf = buildWoolf(classifierType, pGrid, scaler, int(crossFolds), scoringMetric, nNeighbors, nTrees, minLeafSize)
+		woolf = buildWoolf(classifierType, pGrid, scalingType, int(crossFolds), scoringMetric, nNeighbors, nTrees, minLeafSize)
 
 		#Train the model
 		print("Training Model...")
 		results = trainModel(woolf, args.featureTable)
-	except ValueError as e:
+	except (ValueError, TypeError) as e:
 		print("Invalid Input: " + str(e))
 		exit()
 
@@ -238,12 +252,15 @@ if __name__ == '__main__':
 	#OUTPUT
 	print("~~~~~~    RESULTS    ~~~~~~")
 	print("Score of best classifier: " + str(results.best_score_))
-	print("Standard deviation of best score: " + str(results.cv_results_['std_test_score'][results.best_index_]))
+	#print("Standard deviation of best score: " + str(results.cv_results_['std_test_score'][results.best_index_]))
 	print("Best Params:" + str(results.best_params_))
 	if args.verbose:
 		print("Range of classifier scores across hyperparameters:")
 		print("\tMax: " + str(results.best_score_))
 		print("\tMin: " + str(min(results.cv_results_['mean_test_score'])))
+		#print("\tParams: " + str(results.cv_results_['params']))
+		#print("\tValues: " + str(results.cv_results_['mean_test_score']))
+		#print("\tSD: " + str(results.cv_results_['std_test_score']))
 		print("Range of training scores across hyperparameters:")
 		print("\tMax: " + str(max(results.cv_results_['mean_train_score'])))
 		print("\tMin: " + str(min(results.cv_results_['mean_train_score'])))
@@ -252,9 +269,12 @@ if __name__ == '__main__':
 	#Print misclassified sequences
 	if args.listErrors:
 		print("Listing misclassified instances")
-		posErrors, negErrors = findMisclassified(woolf, args.featureTable)
+		posErrors, negErrors, cMatrix = findMisclassified(woolf, args.featureTable)
 		print("misclassified as positive class:\n " + str(posErrors))
 		print("misclassified as negative class:\n " + str(negErrors))
+		if args.verbose:
+			print("Confusion Matrix:")
+			print(cMatrix)
 
 	#Predict new instances
 	if args.predictFeatureTable:
