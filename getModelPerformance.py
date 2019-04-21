@@ -3,53 +3,53 @@
 
 import trainWoolf
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler #minMax normalization
+#from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler #minMax normalization
 
 #files to save to
-accuracyFile = 'fOREST_Acc.csv'
-sdFile = 'kOREST_SD.csv'
+accuracyFile = 'performance_fOREST.csv'
 
-comparisons = ['CSVs/AvB.csv','CSVs/AvNotA.csv','CSVs/AvC.csv','CSVs/AvB.csv'] #paths to files
+comparisons = ['CSVs/AvNotA.csv','CSVs/AvB.csv','CSVs/AvC.csv','CSVs/AvD.csv'] #paths to files
 classifierType = 'fOREST' #'kNN' or 'fOREST'
-#pGrid = {'clf__n_neighbors': range(1,31,5)}
-pGrid = {'clf__n_estimators': range(1,20,3), 'clf__min_samples_leaf': range(1,20,3)}
-scaler = MinMaxScaler()#, StandardScaler(), MaxAbsScaler(), RobustScaler(), None]
+#pGrid = {'clf__n_neighbors': range(1,20)}
+pGrid = {'clf__n_estimators': range(1,15,2), 'clf__min_samples_leaf': range(10,30,3)}
+scalers = ['MinMaxScaler', 'StandardScaler', 'MaxAbsScaler', 'RobustScaler', 'None']
 cvFolds = 5
-scoringMs = ['f1','accuracy','average_precision','precision','recall','roc_auc']
+scoringMs = ['f1','accuracy','MCC']
 nNhrs = nTrs = minL = 0 #not used because pGrid is used
 
 resultsDictList = []
-SDDictList = []
 
 for comp in comparisons:
+	print("Now running: " + comp)
 	for scoringM in scoringMs:
-		infoDict = {'Comparison': comp, 'Scaler': scaler, 'CV Folds': cvFolds, 'Scoring Metric': scoringM}
+		print("\tMetric: " + scoringM)
+		for scaler in scalers:
+			print("\t\tScaler: " + scaler)
+			infoDict = {'Comparison': comp, 'Scaler': scaler, 'CV Folds': cvFolds, 'Scoring Metric': scoringM}
 
-		woolf = trainWoolf.buildWoolf(classifierType, pGrid, scaler, cvFolds, scoringM, nNhrs, nTrs, minL)
-		trainedWoolf = trainWoolf.trainModel(woolf, comp)
+			woolf = trainWoolf.buildWoolf(classifierType, pGrid, scaler, cvFolds, scoringM, nNhrs, nTrs, minL)
+			trainedWoolf = trainWoolf.trainModel(woolf, comp)
 
-		kValues = ['Trees:'+str(d['clf__n_estimators'])+'leaf'+str(d['clf__min_samples_leaf']) for d in trainedWoolf.cv_results_['params']]
-		accuracies = list(trainedWoolf.cv_results_['mean_test_score'])
-		sds = list(trainedWoolf.cv_results_['std_test_score'])
+			if classifierType == 'fOREST':
+				kValues = ['Trees:'+str(d['clf__n_estimators'])+'leaf'+str(d['clf__min_samples_leaf']) for d in trainedWoolf.cv_results_['params']]
+			elif classifierType == 'kNN':
+				kValues = ['k:'+str(d['clf__n_neighbors']) for d in trainedWoolf.cv_results_['params']]
 
-		resultsDict = dict(zip(kValues, accuracies))
-		sdDict = dict(zip(kValues, sds))
+			accuracies = list(trainedWoolf.cv_results_['mean_test_score'])
 
-		resultsDict.update(infoDict)
-		sdDict.update(infoDict)
+			resultsDict = dict(zip(kValues, accuracies))
 
-		resultsDictList.append(resultsDict)
-		SDDictList.append(sdDict)
+			resultsDict.update(infoDict)
+
+			resultsDictList.append(resultsDict)
 
 Accuracies = pd.DataFrame(resultsDictList)
-SDs = pd.DataFrame(SDDictList)
 
 def saveCSV(dataTable, filename):
 	with open(filename, 'a') as f:
-		dataTable.to_csv(f, header=False)
+		dataTable.to_csv(f, header=True)
 
 saveCSV(Accuracies, accuracyFile)
-saveCSV(SDs, sdFile)
 
 
 
