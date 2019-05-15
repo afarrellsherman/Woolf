@@ -77,8 +77,6 @@ def findMisclassified(woolfModel, inputCSV):
     #Grid model to data
 	predictions = woolfModel.predict(seqData)
 
-	cmatrix = confusion_matrix(seqTarget, predictions)
-
 	misAsPos = []
 	misAsNeg = []
 	for i in range(len(seqIDs)):
@@ -87,7 +85,7 @@ def findMisclassified(woolfModel, inputCSV):
 		elif seqTarget[i] == 1 and predictions[i] == 0:
 			misAsNeg.append(seqIDs[i]) 
 
-	return misAsPos, misAsNeg, cmatrix
+	return misAsPos, misAsNeg
 
 
 def predictWoolf(woolfModel, predictCSV):
@@ -269,12 +267,9 @@ if __name__ == '__main__':
 	#Print misclassified sequences
 	if args.listErrors:
 		print("Listing misclassified instances")
-		posErrors, negErrors, cMatrix = findMisclassified(woolf, args.featureTable)
+		posErrors, negErrors = findMisclassified(woolf, args.featureTable)
 		print("misclassified as positive class:\n " + str(posErrors))
 		print("misclassified as negative class:\n " + str(negErrors))
-		if args.verbose:
-			print("Confusion Matrix:")
-			print(cMatrix)
 
 	#Predict new instances
 	if args.predictFeatureTable:
