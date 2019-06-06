@@ -5,7 +5,7 @@ This thesis project will be completed over the course of the 2018-2019 school ye
 ## Fall Semester
 
 ### October
-- [x] **10/20:** Setup Github 
+- [x] **10/20:** Setup Github
 - [x] **10/29:** Basic algorithm research done
 
 ### November
@@ -20,7 +20,7 @@ In November, signifiant changes to the structure of the thesis were proposed tha
 ### December
 - [x] **12/02:** Completed research into common protein classification algorithms
 - [ ] **12/11:** Thesis presentation to committee
-
+<!-- This is all done, yeah? Anything that's not done, I'd open an issue and then remove this file -->
 ## Spring Semester
 
 ### January
@@ -47,4 +47,3 @@ In November, signifiant changes to the structure of the thesis were proposed tha
 
 
 This document will be updated as the work develops to reflect new timelines and goals
-
