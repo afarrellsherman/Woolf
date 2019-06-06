@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+
 # ############################### #
 # featureCSVfromFASTA.py
-# 
+#
 # Creates a feature table with class identificiations from multiple fasta files.
-# 
+#
 # Anna Farrell-Sherman 3/31/19
 # ############################### #
 
@@ -19,9 +21,9 @@ import sys
 def readfasta(filename):
     seqs = list(SeqIO.parse(filename, "fasta"))
     return seqs
-    
 
-### binaryFeatureTable - 
+
+### binaryFeatureTable -
 def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 	seqDicts = []
 
@@ -36,7 +38,7 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 			seqDict['Length'] = len(rec.seq)
 			seqDict['ID'] = rec.id
 			seqDicts.append(seqDict)
-	
+
 	#add sequences from each file in negative group
 	sequenceClass = 0
 	for file in NegSeqFiles:
@@ -51,7 +53,7 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 
 	return pd.DataFrame(seqDicts)
 
-### predictDataFeatureTable - 
+### predictDataFeatureTable -
 def predictDataFeatureTable(sequenceFiles):
 	seqDicts = []
 
@@ -82,7 +84,7 @@ if __name__ == '__main__':
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument("-b", "--binary", action="store_true")
 	group.add_argument("-p", "--predict", action="store_true")
-	
+
 	#parser.add_argument('binaryFeatureTable', help='Create a binary class feature table with one class for the first group of fasta files and another class for the second group')
 	parser.add_argument("-pf", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
 	parser.add_argument("-nf", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
@@ -119,11 +121,3 @@ if __name__ == '__main__':
 			print("For a prediction feature table please provide a fasta file with [-pf]")
 	else:
 		parser.print_help(sys.stderr)
-
-	
-
-
-
-
-
-
