@@ -1,8 +1,8 @@
 # ############################### #
 # trainWoolf.py
-# 
+#
 # Script to build a woolf model.
-# 
+#
 # Anna Farrell-Sherman 11/5/18
 # ############################### #
 
@@ -48,7 +48,7 @@ def buildWoolf(classifierType, pGrid, scalerString, cvFolds, scoringM, nNhrs, nT
 	gridModel = GridSearchCV(pipe, param_grid, cv=cvFolds, scoring=accM, return_train_score=True, iid=False)
 
 	return gridModel
-        
+
 
 
 def trainModel(woolfModel, inputCSV):
@@ -83,7 +83,7 @@ def findMisclassified(woolfModel, inputCSV):
 		if seqTarget[i] == 0 and predictions[i] == 1:
 			misAsPos.append(seqIDs[i])
 		elif seqTarget[i] == 1 and predictions[i] == 0:
-			misAsNeg.append(seqIDs[i]) 
+			misAsNeg.append(seqIDs[i])
 
 	return misAsPos, misAsNeg
 
@@ -135,7 +135,7 @@ def parseRange(rangeString):
 
 def scaler_selector(inputString):
 	'''determine which scaling type was selected'''
-	scalers = {'MinMaxScaler': MinMaxScaler(), 'StandardScaler': StandardScaler(), 
+	scalers = {'MinMaxScaler': MinMaxScaler(), 'StandardScaler': StandardScaler(),
 		'MaxAbsScaler': MaxAbsScaler(), 'RobustScaler': RobustScaler(), 'None': None}
 	scaler = scalers.get(inputString , '')
 	if scaler == '': #raise error if not found
@@ -144,7 +144,7 @@ def scaler_selector(inputString):
 
 def accM_selector(inputString):
 	'''#determine which accuracy metric type was selected'''
-	accMs = {'MCC': make_scorer(matthews_corrcoef), 'f1': 'f1', 
+	accMs = {'MCC': make_scorer(matthews_corrcoef), 'f1': 'f1',
 		'accuracy': 'accuracy', 'precision': 'precision', 'recall': 'recall'}
 	accM = accMs.get(inputString , '')
 	if accM == '': #raise error if not found
@@ -158,14 +158,11 @@ if __name__ == '__main__':
 	##################################################################################
 	#Default Values
 	# If you know enough python to alter the script, you can change the default values
-	# here instead of on the command line.  
+	# here instead of on the command line.
 	##################################################################################
-	scalingType = 'MinMaxScaler' # EX: 'StandardScaler'
-	scoringMetric = 'MCC' #EX: ‘f1’
-	crossFolds = 5 #EX: 10
-	nNeighbors = range(1,20)
-	nTrees = range(1,15,2)
-	minLeafSize = range(10,30,3)
+	nNeighbors = range(1,20) # move default to argparse
+	nTrees = range(1,15,2) # move default to argparse
+	minLeafSize = range(10,30,3) # move default to argparse
 
 	#The parameter grid can take the place of the algorithm inputs above, and allows
 	# adjustment of more parameters in the classifier algorithm
@@ -190,9 +187,18 @@ if __name__ == '__main__':
 	parser.add_argument("-l", "--minLeafSize", type=parseRange, help="minimum size of leaves in each tree of the random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
 
 	#set up learning parameters
-	parser.add_argument("-s", "--featureScaler", help="A scikit learn scaler object to scale in the input features")
-	parser.add_argument("-c", "--crossValidationFolds", help="The number of cross validation folds to execute")
-	parser.add_argument("-a", "--accuracyMetric", help="A scikit learn accuracy metric for training")
+	parser.add_argument("-s", "--featureScaler",
+		default="MinMaxScaler",
+		choices=["MinMaxScaler", "StandardScaler",], # add additional options?
+		help="A scikit learn scaler object to scale in the input features")
+	parser.add_argument("-c", "--crossValidationFolds",
+		type=Int,
+		default=5,
+		help="The number of cross validation folds to execute")
+	parser.add_argument("-a", "--accuracyMetric",
+		default="MCC",
+		choices=["MCC", "f1",], # add additional options?
+		help="A scikit learn accuracy metric for training")
 
 	#add functionality
 	parser.add_argument("-p", "--predictFeatureTable", help="A unclassified feature table to be predicted by the model")
@@ -212,10 +218,10 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	#update learning parameters if needed
-	scalingType = args.featureScaler if args.featureScaler else scalingType
-	scoringMetric = args.accuracyMetric if args.accuracyMetric else scoringMetric
+	scalingType = args.featureScaler
+	scoringMetric = args.accuracyMetric
 	crossFolds = args.crossValidationFolds if args.crossValidationFolds else crossFolds
-	nNeighbors = args.nNeighbors if args.nNeighbors else nNeighbors
+	nNeighbors = args.nNeighbors
 	nTrees = args.nTrees if args.nTrees else nTrees
 	minLeafSize = args.minLeafSize if args.minLeafSize else minLeafSize
 
@@ -281,8 +287,3 @@ if __name__ == '__main__':
 				print("Score on test data: " + str(score))
 		except FileNotFoundError:
 			print("ERROR: Feature Table not found: " + args.predictFeatureTable)
-        
-
-
-
-        
