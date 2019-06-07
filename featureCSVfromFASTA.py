@@ -129,4 +129,4 @@ if __name__ == '__main__':
 		else:
 			print("For a prediction feature table please provide a fasta file with [-pf]")
 	else:
-		parser.print_help(sys.stderr)
+		parser.print_help(sys.stderr) # might be good to *also* add a descriptive message
