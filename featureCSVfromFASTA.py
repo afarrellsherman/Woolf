@@ -14,6 +14,7 @@ from Bio.SeqUtils.ProtParam import ProteinAnalysis #for determining percentage c
 import pandas as pd #to create the CSV file
 import argparse # to format command line arguments
 import sys
+import os
 
 ### readfiles - opens files to read sequences
 # filename: a file or path to a file containing sequence data in fasta format
@@ -86,6 +87,7 @@ if __name__ == '__main__':
 	group.add_argument("-p", "--predict", action="store_true")
 
 	#parser.add_argument('binaryFeatureTable', help='Create a binary class feature table with one class for the first group of fasta files and another class for the second group')
+	# Though permissible, short versions of shell args are typically a single letter.
 	parser.add_argument("-pf", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
 	parser.add_argument("-nf", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
 
@@ -96,12 +98,19 @@ if __name__ == '__main__':
 		parser.print_help(sys.stderr)
 		sys.exit(1)
 
+	# use default in argparse instead
 	folderName = ""
 	if args.folder:
-		folderName = args.folder + "/"
+		# os.path.join() takes care of the slashes, (also lets it work on windows).
+		# Almost never a good idea to manually deal with paths
+		folderName = args.folder
+		if not os.path.isdir(folderName):
+			os.mkdir(folderName)
 
-	fileName = folderName+args.comparisonName+".csv"
+	fileName = os.path.join(folderName, args.comparisonName + ".csv") # probably better to let the user add the .csv
 
+	# At the momment, a user can pass both --binary and --predict, but only binary will run.
+	# Suggest either throwing an error if both are true, or running both with different file names if both are passed
 	if args.binary:
 		if args.posFasta and args.negFasta:
 			seqFeatureTable = binaryFeatureTable(args.posFasta, args.negFasta)
