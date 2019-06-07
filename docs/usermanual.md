@@ -247,39 +247,15 @@ the classification power of Woolf Classifiers.
 
 **Table 4.1** User specified parameters
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------
-                                     Parameter                                         Default Option       Option Flag   How to Format Input
-  ---------------------------------- ------------------------------------------------- -------------------- ------------- ---------------------
-                                     Feature scaling type                              Min-Max Scaling      $- s$         StandardScaler
+  | Parameter                                                         | Default Option     | Option Flag | How to Format Input
+--|-------------------------------------------------------------------|--------------------|-------------|--------------------
+  | Feature scaling type                                              | Min-Max Scaling    | `-s`        | StandardScaler<br>MaxAbsScaler
+  | Cross-validation folds                                            | 5                  | `-c`        | 10<br>20
+  | Accuracy metric                                                   | MCC                | `-a`        | accuracy<br>f1
+  | Number of neighbors (kNN only) | range from 1 to 20 | `-n`        | 5<br>1-20<br>1-30,5
+  | Number of trees (random forest only)                              | range from 1 to 20 | `-t`        | 5<br>1-20<br>1-30,5
+  | Minimum instances per leaf (random forest only)                   | 10, 15, 20, 25, 30 | `-l`        | 10<br>10-0<br>10-30,5
 
-                                                                                                                          MaxAbsScaler
-
-                                     Cross-validation folds                            5                    $- c$         10
-
-                                                                                                                          20
-
-                                     Accuracy metric                                   MCC                  $- a$         accuracy
-
-                                                                                                                          f1
-
-  Algorithm Hyper-Parameter Ranges   Number of neighbors (kNN only)                    range from 1 to 20   $- n$         5
-
-                                                                                                                          1-20
-
-                                                                                                                          1-30,5
-
-                                     Number of trees (random forest only)              range from 1 to 20   $- t$         5
-
-                                                                                                                          1-20
-
-                                                                                                                          1-30,5
-
-                                     Minimum instances per leaf (random forest only)   10, 15, 20, 25, 30   $- l$         10
-
-                                                                                                                          10-50
-
-                                                                                                                          10-30,5
-  ---------------------------------------------------------------------------------------------------------------------------------------------
 
 **Hyperparameter Ranges**
 
@@ -328,32 +304,15 @@ ranges from unduly influencing the prediction \[100\].
 
 Table 4.2 shows the range of different scalar types and when they might
 be useful.
+**Table 4.2** Possible Scaler Types
 
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Table 4.2** Possible Scaler Types
-  ------------------------------------- ------------------------------------------------------------------------------- -------------------------------------------------------------
-  **Scaler Name**                       **Function**                                                                    **Suggested Use Cases**
-
-  StandardScaler                        Scales each feature to zero mean and unit variance                              - General use
-
-  MinMaxScaler                          Scales each feature to a range between 0 and 1                                  - Sparse data
-
-                                                                                                                        - Possible zeros in data
-
-                                                                                                                        - Small standard deviations
-
-  MaxAbsScaler                          Scales each feature to a range between -1 and 1                                 - Sparse data
-
-                                                                                                                        - Possible negative data
-
-                                                                                                                        - Small standard deviations
-
-  RobustScaler                          Scales using alternative center and range metrics that are robust to outliers   - Data with outliers
-
-  None                                  No scaling                                                                      - Approximately normally distributed data in similar ranges
-
-                                                                                                                        - comparison to other methods
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Scaler Name    | Function                                                                      | Suggested Use Cases
+---------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------
+StandardScaler | Scales each feature to zero mean and unit variance                            | - General use
+MinMaxScaler   | Scales each feature to a range between 0 and 1                                | - Sparse data<br>- Possible zeros in data<br>- Small standard deviations
+MaxAbsScaler   | Scales each feature to a range between -1 and 1                               | - Sparse data<br>- Possible negative data<br>- Small standard deviations
+RobustScaler   | Scales using alternative center and range metrics that are robust to outliers | - Data with outliers
+None           | No scaling                                                                    | - Approximately normally distributed data in similar ranges<br>- comparison to other methods
 
 To change the scalar type from the default Min-Max Scalar to the
 Standard Scalar, use this command:
@@ -396,14 +355,16 @@ $ python trainWoolf.py -k CSVfolder/AvsNotA.csv -v -a accuracy
 
 All possible accuracy metrics are described in Table 4.3.
 
-  **Table 4.3 Possible Accuracy Metrics.** All implementations come from the scikit-lean preprocessing package \[101\].
-  ----------------------------------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------- ------------------------------------------------------------------------------------------- -----------------------------------------------------------------------------------
-  **Metric**                                                                                                              **Description**                                                                       **Function**                                                                                **Suggested Use Cases**
-  accuracy                                                                                                                Percentage of instances classified correctly                                          $$\frac{TP + TN}{TP + FP + FN + TN}$$                                                       Balanced class distributions of instances
-  recall                                                                                                                  Proportion of actually positive instances that are correctly identified as positive   $$\frac{\text{TP}}{TP + FN}$$                                                               When the most important result it to identify all the positive cases
-  precision                                                                                                               Proportion of predicted positive instances that are actually positive                 $$\frac{\text{TP}}{TP + FP}$$                                                               When it is important to make sure all the predicted positives are really positive
-  f1                                                                                                                      Harmonic mean of recall and precision                                                 $$\frac{2(p \times r)}{p + r}$$                                                             When both recall and precision are important
-  MCC                                                                                                                     Combination of all terms from confusion matrix                                        $$\frac{TP\  \times \ TN - FP\  \times FN}{\sqrt{(TP + FN)(TP + FP)(TN + FP)(TN + FN)}}$$   Small datasets in which both positive and negative classes are important
+ **Table 4.3 Possible Accuracy Metrics.** All implementations come from the scikit-lean preprocessing package \[101\].
+<!-- TODO: Equations need fixing, see https://stackoverflow.com/questions/35498525/latex-rendering-in-readme-md-on-github -->
+
+Metric    | Description                                                                         | Function                                                                                  | Suggested Use Cases
+----------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------
+accuracy  | Percentage of instances classified correctly                                        | $$\frac{TP + TN}{TP + FP + FN + TN}$$                                                     | Balanced class distributions of instances
+recall    | Proportion of actually positive instances that are correctly identified as positive | $$\frac{\text{TP}}{TP + FN}$$                                                             | When the most important result it to identify all the positive cases
+precision | Proportion of predicted positive instances that are actually positive               | $$\frac{\text{TP}}{TP + FP}$$                                                             | When it is important to make sure all the predicted positives are really positive
+f1        | Harmonic mean of recall and precision                                               | $$\frac{2(p \times r)}{p + r}$$                                                           | When both recall and precision are important
+MCC       | Combination of all terms from confusion matrix                                      | $$\frac{TP\  \times \ TN - FP\  \times FN}{\sqrt{(TP + FN)(TP + FP)(TN + FP)(TN + FN)}}$$ | Small datasets in which both positive and negative classes are important
 
 ### STEP 5: Listing Misclassified Proteins
 
