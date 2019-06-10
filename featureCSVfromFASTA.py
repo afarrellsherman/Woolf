@@ -102,7 +102,6 @@ if __name__ == '__main__':
 	folderName = ""
 	if args.folder:
 		# os.path.join() takes care of the slashes, (also lets it work on windows).
-		# Almost never a good idea to manually deal with paths
 		folderName = args.folder
 		if not os.path.isdir(folderName):
 			os.mkdir(folderName)
