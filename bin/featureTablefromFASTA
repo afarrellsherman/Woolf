@@ -29,9 +29,9 @@ group.add_argument("-b", "--binary", action="store_true")
 group.add_argument("-t", "--predict", action="store_true")
 
 #add arguments for positive and negative class fasta files
-# Though permissible, short versions of shell args are typically a single letter.
-parser.add_argument("-p", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
-parser.add_argument("-n", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
+parser.add_argument("-p", "--posFasta", nargs='+', help="one or more FASTA files containing amino acid sequences belonging to the positive class")
+parser.add_argument("-n", "--negFasta", nargs='+', help="one or more FASTA files containing amino acid sequences belonging to the negative class")
+parser.add_argument("-u", "--unknownFasta", nargs='+', help="one or more FASTA files containing amino acid sequences of unknown function")
 
 
 args = parser.parse_args()
@@ -46,26 +46,32 @@ if args.folder:
 	if not os.path.isdir(folderName):
 		os.mkdir(folderName)
 	fileName = os.path.join(folderName, args.comparisonFileName + '.csv')
+else:
+	fileName = args.comparisonFileName + '.csv'
 
 #Creating a binary feature table
 if args.binary:
+	if args.unknownFasta:
+		print("Ignoring inputs to --unknownFasta to create a binary feature table: " + str(args.unknownFasta))
 	if args.posFasta and args.negFasta:
-		seqFeatureTable = binaryFeatureTable(args.posFasta, args.negFasta)
-		saveCSV(seqFeatureTable, fileName)
+		seqFeatureTable = featureTable.binaryFeatureTable(args.posFasta, args.negFasta)
+		featureTable.saveCSV(seqFeatureTable, fileName)
 		print('Binary Table')
 		print('Saved csv file to: ' + fileName)
 	else:
-		print("For a binary feature table please provide both positive and negative class fasta files with [-pf] and [-nf]")
+		print("For a binary feature table please provide both positive and negative class fasta files with [-p] and [-n]")
 #creating a prediction feature table
 elif args.predict:
+	if args.posFasta or args.negFasta:
+		print("Ignoring inputs to --posFasta and --negFasta to create a prediction feature table")
 	if args.posFasta:
-		print(args.posFasta)
-		seqFeatureTable = predictDataFeatureTable(args.posFasta)
-		saveCSV(seqFeatureTable, fileName)
+		print(args.unknownFasta)
+		seqFeatureTable = featureTable.predictDataFeatureTable(args.unknownFasta)
+		featureTable.saveCSV(seqFeatureTable, fileName)
 		print('Prediction Table')
 		print('Saved csv file to: ' + fileName)
 	else:
-		print("For a prediction feature table please provide a fasta file with [-pf]")
+		print("For a prediction feature table please provide a fasta file with [-u]")
 #Error message and printing help if no feature table type is passed
 else:
 	print('Error: Please select either binary or predict as discribed below:\n')
