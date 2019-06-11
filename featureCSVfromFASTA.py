@@ -78,18 +78,18 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Build a CVS feature table from amino acid FASTA files")
 
 	#Output file info (user specified output)
-	parser.add_argument("-c", "--comparisonName", default="featureTable", help="an identifying tag for all output files")
+	parser.add_argument("-c", "--comparisonFileName", default="featureTable", help="an identifying tag for all output files")
 	parser.add_argument("-f", "--folder", default="", help="A folder to contain the output files")
 
 	#choose machine learning algorithm
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument("-b", "--binary", action="store_true")
-	group.add_argument("-p", "--predict", action="store_true")
+	group.add_argument("-t", "--predict", action="store_true")
 
 	#add arguments for positive and negative class fasta files
 	# Though permissible, short versions of shell args are typically a single letter.
-	parser.add_argument("-pf", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
-	parser.add_argument("-nf", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
+	parser.add_argument("-p", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
+	parser.add_argument("-n", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
 
 
 	args = parser.parse_args()
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 		folderName = args.folder
 		if not os.path.isdir(folderName):
 			os.mkdir(folderName)
-		fileName = os.path.join(folderName, args.comparisonName + ".csv") # probably better to let the user add the .csv
+		fileName = os.path.join(folderName, args.comparisonFileName + '.csv')
 
 	#Creating a binary feature table
 	if args.binary:
