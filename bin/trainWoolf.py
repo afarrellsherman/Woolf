@@ -12,7 +12,7 @@ from argparse import ArgumentParser, ArgumentTypeError #used to create command l
 import sys # for error handeling
 
 #import Woolf module for classifier building
-import trainWoolf
+from woolf import woolfClassifier
 
 ##################################################################################
 #Default Values
@@ -25,13 +25,23 @@ crossFolds = 5 #EX: 10
 nNeighbors = range(1,20)
 nTrees = range(1,15,2)
 minLeafSize = range(10,30,3)
-
-#The parameter grid can take the place of the algorithm inputs above, and allows
-# adjustment of more parameters in the classifier algorithm
-pGrid = None
-#EX: {'clf__n_estimators': range(1,20), 'clf__min_samples_leaf': range(3,30,3)}
 ##################################################################################
 ##################################################################################
+def parseRange(rangeString):
+	'''Looks at inputed range from command line and parses it into a python object'''
+	try:
+		if ',' in rangeString:
+			lo, hi = rangeString.split('-')
+			hi, jump = hi.split(',')
+			res = list(range(int(lo), int(hi)+1, int(jump)))
+		elif '-' in rangeString:
+			lo, hi = rangeString.split('-')
+			res = list(range(int(lo), int(hi)+1))
+		elif rangeString.isdigit():
+			res = [int(rangeString)]
+	except:
+		raise ArgumentTypeError("'" + rangeString + "' is not a valid range of numbers. Expected formats: '1' '1-10' or '1-10,2'.")
+	return res
 
 parser = ArgumentParser(description="Create a Woolf Model based a feature table")
 parser.add_argument("featureTable", help="A CSV file containing feature data from a set of sequences")
@@ -96,11 +106,11 @@ if args.verbose:
 
 try:
 	#Build the model
-	woolf = buildWoolf(classifierType, pGrid, scalingType, int(crossFolds), scoringMetric, nNeighbors, nTrees, minLeafSize)
+	woolf = woolfClassifier.buildWoolf(classifierType, scalingType, int(crossFolds), scoringMetric, nNeighbors, nTrees, minLeafSize)
 
 	#Train the model
 	print("Training Model...")
-	results = trainModel(woolf, args.featureTable)
+	results = woolfClassifier.trainModel(woolf, args.featureTable)
 except (ValueError, TypeError) as e:
 	print("Invalid Input: " + str(e))
 	exit()

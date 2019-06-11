@@ -23,20 +23,19 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, Ro
 #other functionality
 import pandas as pd #to import the csv datafile
 import numpy as np # to read in length as float64
-from ast import literal_eval #to decode dictionaries entered for parameter grids
 import sys # for error handeling
 
 
-def buildWoolf(classifierType, pGrid, scalerString, cvFolds, scoringM, nNhrs, nTrs, minL):
+def buildWoolf(classifierType, scalerString, cvFolds, scoringM, nNhrs, nTrs, minL):
 	'''Creates the Woolf Model with all user given parameters '''
 
     #Classifiers and Param Grids
 	if classifierType == 'kNN':
 		clf = neighbors.KNeighborsClassifier(weights='uniform')
-		param_grid = {'clf__n_neighbors': nNhrs} if pGrid == None else pGrid
+		param_grid = {'clf__n_neighbors': nNhrs}
 	elif classifierType == 'fOREST':
 		clf = RandomForestClassifier(random_state=42)
-		param_grid = {'clf__n_estimators': nTrs, 'clf__min_samples_leaf': minL} if pGrid == None else pGrid
+		param_grid = {'clf__n_estimators': nTrs, 'clf__min_samples_leaf': minL}
 	else:
 		raise NameError("Unrecognized classifier type: " + classifierType)
 
@@ -117,23 +116,6 @@ def predictWoolf(woolfModel, predictCSV):
 	resultsDict = dict(zip(seqIDs, predictions))
 
 	return resultsDict, score
-
-
-def parseRange(rangeString):
-	'''Looks at inputed range from command line and parses it into a python object'''
-	try:
-		if ',' in rangeString:
-			lo, hi = rangeString.split('-')
-			hi, jump = hi.split(',')
-			res = list(range(int(lo), int(hi)+1, int(jump)))
-		elif '-' in rangeString:
-			lo, hi = rangeString.split('-')
-			res = list(range(int(lo), int(hi)+1))
-		elif rangeString.isdigit():
-			res = [int(rangeString)]
-	except:
-		raise ArgumentTypeError("'" + rangeString + "' is not a valid range of numbers. Expected formats: '1' '1-10' or '1-10,2'.")
-	return res
 
 def scaler_selector(inputString):
 	'''determine which scaling type was selected'''

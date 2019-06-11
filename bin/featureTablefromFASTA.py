@@ -14,7 +14,7 @@ import sys #for command line parsing
 import os #for creating file names
 
 #import import Woolf module for creating feature tables
-import featureCSVfromFASTA
+from woolf import featureTable
 
 #create parser for command line 
 parser = argparse.ArgumentParser(description="Build a CVS feature table from amino acid FASTA files")
