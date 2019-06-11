@@ -98,18 +98,14 @@ if __name__ == '__main__':
 		parser.print_help(sys.stderr)
 		sys.exit(1)
 
-	# use default in argparse instead
-	#folderName = ""
 	if args.folder:
 		# os.path.join() (used later) takes care of the slashes, (also lets it work on windows).
 		folderName = args.folder
 		if not os.path.isdir(folderName):
 			os.mkdir(folderName)
+		fileName = os.path.join(folderName, args.comparisonName + ".csv") # probably better to let the user add the .csv
 
-	fileName = os.path.join(folderName, args.comparisonName + ".csv") # probably better to let the user add the .csv
-
-	# At the momment, a user can pass both --binary and --predict, but only binary will run.
-	# Suggest either throwing an error if both are true, or running both with different file names if both are passed
+	#Creating a binary feature table
 	if args.binary:
 		if args.posFasta and args.negFasta:
 			seqFeatureTable = binaryFeatureTable(args.posFasta, args.negFasta)
@@ -118,6 +114,7 @@ if __name__ == '__main__':
 			print('Saved csv file to: ' + fileName)
 		else:
 			print("For a binary feature table please provide both positive and negative class fasta files with [-pf] and [-nf]")
+	#creating a prediction feature table
 	elif args.predict:
 		if args.posFasta:
 			print(args.posFasta)
@@ -127,5 +124,7 @@ if __name__ == '__main__':
 			print('Saved csv file to: ' + fileName)
 		else:
 			print("For a prediction feature table please provide a fasta file with [-pf]")
+	#Error message and printing help if no feature table type is passed
 	else:
+		print('Error: Please select either binary or predict as discribed below:\n')
 		parser.print_help(sys.stderr) # might be good to *also* add a descriptive message
