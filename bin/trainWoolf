@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # ############################### #
-# trainWoolf.py
+# trainWoolf
 #
 # Script to build a woolf model.
 #
@@ -14,19 +14,7 @@ import sys # for error handeling
 #import Woolf module for classifier building
 from woolf import woolfClassifier
 
-##################################################################################
-#Default Values
-# If you know enough python to alter the script, you can change the default values
-# here instead of on the command line.
-##################################################################################
-scalingType = 'MinMaxScaler' # EX: 'StandardScaler'
-scoringMetric = 'MCC' #EX: ‘f1’
-crossFolds = 5 #EX: 10
-nNeighbors = range(1,20)
-nTrees = range(1,15,2)
-minLeafSize = range(10,30,3)
-##################################################################################
-##################################################################################
+#function used to define the input of a range of numbers to the script
 def parseRange(rangeString):
 	'''Looks at inputed range from command line and parses it into a python object'''
 	try:
@@ -52,16 +40,16 @@ group.add_argument("-k", "--kNN", action="store_true")
 group.add_argument("-f", "--randomForest", action="store_true")
 
 #kNN arguments
-parser.add_argument("-n", "--nNeighbors", type=parseRange, help="number of neighboors for kNN classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
+parser.add_argument("-n", "--nNeighbors", default=range(1,20), type=parseRange, help="number of neighboors for kNN classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
 
 #random Forest arguments
-parser.add_argument("-t", "--nTrees", type=parseRange, help="number of trees for random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
-parser.add_argument("-l", "--minLeafSize", type=parseRange, help="minimum size of leaves in each tree of the random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
+parser.add_argument("-t", "--nTrees", default=range(1,15,2), type=parseRange, help="number of trees for random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
+parser.add_argument("-l", "--minLeafSize", default=range(10,30,3), type=parseRange, help="minimum size of leaves in each tree of the random forest classifier.  Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7")
 
 #set up learning parameters
-parser.add_argument("-s", "--featureScaler", help="A scikit learn scaler object to scale in the input features")
-parser.add_argument("-c", "--crossValidationFolds", help="The number of cross validation folds to execute")
-parser.add_argument("-a", "--accuracyMetric", help="A scikit learn accuracy metric for training")
+parser.add_argument("-s", "--featureScaler", default='MinMaxScaler', help="A scikit learn scaler object to scale in the input features")
+parser.add_argument("-c", "--crossValidationFolds", default=5, help="The number of cross validation folds to execute")
+parser.add_argument("-a", "--accuracyMetric", default='MCC', help="A scikit learn accuracy metric for training")
 
 #add functionality
 parser.add_argument("-p", "--predictFeatureTable", help="A unclassified feature table to be predicted by the model")
