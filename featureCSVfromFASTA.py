@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+
 # ############################### #
 # featureCSVfromFASTA.py
-# 
+#
 # Creates a feature table with class identificiations from multiple fasta files.
-# 
+#
 # Anna Farrell-Sherman 3/31/19
 # ############################### #
 
@@ -11,7 +13,8 @@ from Bio import SeqIO #for fasta reading
 from Bio.SeqUtils.ProtParam import ProteinAnalysis #for determining percentage composition
 import pandas as pd #to create the CSV file
 import argparse # to format command line arguments
-import sys
+import sys #for command line parsing
+import os #for creating file names
 
 ### readfiles - opens files to read sequences
 # filename: a file or path to a file containing sequence data in fasta format
@@ -19,9 +22,9 @@ import sys
 def readfasta(filename):
     seqs = list(SeqIO.parse(filename, "fasta"))
     return seqs
-    
 
-### binaryFeatureTable - 
+
+### binaryFeatureTable -
 def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 	seqDicts = []
 
@@ -36,7 +39,7 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 			seqDict['Length'] = len(rec.seq)
 			seqDict['ID'] = rec.id
 			seqDicts.append(seqDict)
-	
+
 	#add sequences from each file in negative group
 	sequenceClass = 0
 	for file in NegSeqFiles:
@@ -51,7 +54,7 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 
 	return pd.DataFrame(seqDicts)
 
-### predictDataFeatureTable - 
+### predictDataFeatureTable -
 def predictDataFeatureTable(sequenceFiles):
 	seqDicts = []
 
@@ -75,17 +78,18 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Build a CVS feature table from amino acid FASTA files")
 
 	#Output file info (user specified output)
-	parser.add_argument("-c", "--comparisonName", default="featureTable", help="an identifying tag for all output files")
-	parser.add_argument("-f", "--folder", help="A folder to contain the output files")
+	parser.add_argument("-c", "--comparisonFileName", default="featureTable", help="an identifying tag for all output files")
+	parser.add_argument("-f", "--folder", default="", help="A folder to contain the output files")
 
 	#choose machine learning algorithm
 	group = parser.add_mutually_exclusive_group()
 	group.add_argument("-b", "--binary", action="store_true")
-	group.add_argument("-p", "--predict", action="store_true")
-	
-	#parser.add_argument('binaryFeatureTable', help='Create a binary class feature table with one class for the first group of fasta files and another class for the second group')
-	parser.add_argument("-pf", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
-	parser.add_argument("-nf", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
+	group.add_argument("-t", "--predict", action="store_true")
+
+	#add arguments for positive and negative class fasta files
+	# Though permissible, short versions of shell args are typically a single letter.
+	parser.add_argument("-p", "--posFasta", nargs='+', help="a single fasta file for a Binary Feature Table, or a set of one or more fasta files for a multiClass Feature Table")
+	parser.add_argument("-n", "--negFasta", nargs='+', help="one or more fasta files containing the negative class sequences for a multiClass Feature Table")
 
 
 	args = parser.parse_args()
@@ -94,12 +98,14 @@ if __name__ == '__main__':
 		parser.print_help(sys.stderr)
 		sys.exit(1)
 
-	folderName = ""
 	if args.folder:
-		folderName = args.folder + "/"
+		# os.path.join() (used later) takes care of the slashes, (also lets it work on windows).
+		folderName = args.folder
+		if not os.path.isdir(folderName):
+			os.mkdir(folderName)
+		fileName = os.path.join(folderName, args.comparisonFileName + '.csv')
 
-	fileName = folderName+args.comparisonName+".csv"
-
+	#Creating a binary feature table
 	if args.binary:
 		if args.posFasta and args.negFasta:
 			seqFeatureTable = binaryFeatureTable(args.posFasta, args.negFasta)
@@ -108,6 +114,7 @@ if __name__ == '__main__':
 			print('Saved csv file to: ' + fileName)
 		else:
 			print("For a binary feature table please provide both positive and negative class fasta files with [-pf] and [-nf]")
+	#creating a prediction feature table
 	elif args.predict:
 		if args.posFasta:
 			print(args.posFasta)
@@ -117,13 +124,7 @@ if __name__ == '__main__':
 			print('Saved csv file to: ' + fileName)
 		else:
 			print("For a prediction feature table please provide a fasta file with [-pf]")
+	#Error message and printing help if no feature table type is passed
 	else:
-		parser.print_help(sys.stderr)
-
-	
-
-
-
-
-
-
+		print('Error: Please select either binary or predict as discribed below:\n')
+		parser.print_help(sys.stderr) # might be good to *also* add a descriptive message

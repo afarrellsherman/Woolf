@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 #getResults.py
 
 
@@ -50,6 +52,3 @@ def saveCSV(dataTable, filename):
 		dataTable.to_csv(f, header=True)
 
 saveCSV(Accuracies, accuracyFile)
-
-
-

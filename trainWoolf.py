@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+
 # ############################### #
 # trainWoolf.py
-# 
+#
 # Script to build a woolf model.
-# 
+#
 # Anna Farrell-Sherman 11/5/18
 # ############################### #
 
@@ -48,7 +50,7 @@ def buildWoolf(classifierType, pGrid, scalerString, cvFolds, scoringM, nNhrs, nT
 	gridModel = GridSearchCV(pipe, param_grid, cv=cvFolds, scoring=accM, return_train_score=True, iid=False)
 
 	return gridModel
-        
+
 
 
 def trainModel(woolfModel, inputCSV):
@@ -83,7 +85,7 @@ def findMisclassified(woolfModel, inputCSV):
 		if seqTarget[i] == 0 and predictions[i] == 1:
 			misAsPos.append(seqIDs[i])
 		elif seqTarget[i] == 1 and predictions[i] == 0:
-			misAsNeg.append(seqIDs[i]) 
+			misAsNeg.append(seqIDs[i])
 
 	return misAsPos, misAsNeg
 
@@ -135,7 +137,7 @@ def parseRange(rangeString):
 
 def scaler_selector(inputString):
 	'''determine which scaling type was selected'''
-	scalers = {'MinMaxScaler': MinMaxScaler(), 'StandardScaler': StandardScaler(), 
+	scalers = {'MinMaxScaler': MinMaxScaler(), 'StandardScaler': StandardScaler(),
 		'MaxAbsScaler': MaxAbsScaler(), 'RobustScaler': RobustScaler(), 'None': None}
 	scaler = scalers.get(inputString , '')
 	if scaler == '': #raise error if not found
@@ -144,7 +146,7 @@ def scaler_selector(inputString):
 
 def accM_selector(inputString):
 	'''#determine which accuracy metric type was selected'''
-	accMs = {'MCC': make_scorer(matthews_corrcoef), 'f1': 'f1', 
+	accMs = {'MCC': make_scorer(matthews_corrcoef), 'f1': 'f1',
 		'accuracy': 'accuracy', 'precision': 'precision', 'recall': 'recall'}
 	accM = accMs.get(inputString , '')
 	if accM == '': #raise error if not found
@@ -158,7 +160,7 @@ if __name__ == '__main__':
 	##################################################################################
 	#Default Values
 	# If you know enough python to alter the script, you can change the default values
-	# here instead of on the command line.  
+	# here instead of on the command line.
 	##################################################################################
 	scalingType = 'MinMaxScaler' # EX: 'StandardScaler'
 	scoringMetric = 'MCC' #EX: ‘f1’
@@ -281,8 +283,3 @@ if __name__ == '__main__':
 				print("Score on test data: " + str(score))
 		except FileNotFoundError:
 			print("ERROR: Feature Table not found: " + args.predictFeatureTable)
-        
-
-
-
-        
