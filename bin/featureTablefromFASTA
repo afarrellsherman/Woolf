@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # ############################### #
-# featureCSVfromFASTA.py
+# featureCSVfromFASTA
 #
 # Creates a feature table with class identificiations from multiple fasta files.
 #
