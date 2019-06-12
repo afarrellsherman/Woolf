@@ -17,7 +17,7 @@ The Woolf pipeline uses sci-kit learn to provide the following machine learning 
 
 For a complete tutorial please see the [User Guide](docs/usermanual.md).
 
-### Dependances
+### Dependancies
 
 These dependancies should be installed automatically if they are not already present:
 * pandas
@@ -38,7 +38,7 @@ $ pip install woolf
 
 Run the following on the comand line, with both FASTA files in the current working directory:
 
-```sh
+```
 featureTablefromFASTA [-h] [-c COMPARISONFILENAME] [-f FOLDER]
                              [-b | -t] [-p POSFASTA [POSFASTA ...]]
                              [-n NEGFASTA [NEGFASTA ...]]
@@ -46,16 +46,21 @@ featureTablefromFASTA [-h] [-c COMPARISONFILENAME] [-f FOLDER]
 
 Options:
 
-  * 
-  * **-c, --comparisonFileName COMPARISONFILENAME** an identifying tag for all output files
-  * **-f, --folder FOLDER** A folder to contain the output files
+   **-h, --help** Show help message and exit.
 
-  * **-b, --binary** Creates a feature table with binary class markers
-  * **-t, --predict** Creates a feature table with no class markers for use in prediction
+   **-c, --comparisonFileName COMPARISONFILENAME** An identifying tag for all output files.
 
-  * **-p, --posFasta POSFASTA ...** One or more FASTA files containing amino acid sequences belonging to the positive class
-  * **-n, --negFasta NEGFASTA...** One or more FASTA files containing amino acid sequences belonging to the negative class
-  * **-u, --unknownFasta UNKNOWNFASTA...** One or more FASTA files containing amino acid sequences of unknown function
+   **-f, --folder FOLDER** A folder to contain the output files.
+
+   **-b, --binary** Creates a feature table with binary class markers.
+
+   **-t, --predict** Creates a feature table with no class markers for use in prediction.
+
+   **-p, --posFasta POSFASTA ...** One or more FASTA files containing amino acid sequences belonging to the positive class.
+
+   **-n, --negFasta NEGFASTA...** One or more FASTA files containing amino acid sequences belonging to the negative class.
+
+   **-u, --unknownFasta UNKNOWNFASTA...** One or more FASTA files containing amino acid sequences of unknown function.
 
 Note that posFasta and negFasta should contain genes from a similar class with one distinct functional difference.
 
@@ -65,7 +70,7 @@ The output file outputFile will contain a feature table with percent composition
 
 Run the following on the comand line, with the feature table/tables in the current working directory:
 
-```sh
+```
 trainWoolf [-h] [-k | -f] [-n NNEIGHBORS] [-t NTREES] [-l MINLEAFSIZE]
                   [-s FEATURESCALER] [-c CROSSVALIDATIONFOLDS]
                   [-a ACCURACYMETRIC] [-p PREDICTFEATURETABLE] [-e] [-v]
@@ -74,21 +79,29 @@ trainWoolf [-h] [-k | -f] [-n NNEIGHBORS] [-t NTREES] [-l MINLEAFSIZE]
 
 Options:
 
- * **-h, --help** Show help message and exit.
+  **-h, --help** Show help message and exit.
 
- * **-k, --kNN** Select a kNN algorithm for training.
- * **-f, --randomForest** Select a random forest algorithm for training.
+  **-k, --kNN** Select a kNN algorithm for training.
 
- * **-n, --nNeighbors NNEIGHBORS** Number of neighboors for kNN classifier. Ranges are expresed as `low-hi,jump` (`1-7,2` would test 1,3,5 and 7).
- * **-t, --nTrees NTREES** Number of trees for random forest classifier. Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7).
- * **-l, --minLeafSize MINLEAFSIZE** Minimum size of leaves in each tree of the random forest classifier. Ranges are expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7).
+  **-f, --randomForest** Select a random forest algorithm for training.
 
- * **-s, --featureScaler FEATURESCALER** A scikit learn scaler object to scale in the input features.
- * **-c, --crossValidationFolds CROSSVALIDATIONFOLDS** The number of cross validation folds to execute.
- * **-a, --accuracyMetric ACCURACYMETRIC** A scikit learn accuracy metric for training.
- * **-p, --predictFeatureTable PREDICTFEATURETABLE** A unclassified feature table to be predicted by the model.
- * **-e, --listErrors** Include to see a list of which sequences in the training dataset were missclassified.
- * **-v, --verbose** Inlcude to get more detailed output.
+  **-n, --nNeighbors NNEIGHBORS** Number of neighboors for kNN classifier. Ranges are expresed as `low-hi,jump` (`1-7,2` would test 1,3,5 and 7).
+
+  **-t, --nTrees NTREES** Number of trees for random forest classifier. Ranges are expresed as `low-hi,jump` (`1-7,2` would test 1,3,5 and 7).
+
+  **-l, --minLeafSize MINLEAFSIZE** Minimum size of leaves in each tree of the random forest classifier. Ranges are expresed as low-hi,jump (`1-7,2` would test 1,3,5 and 7).
+
+  **-s, --featureScaler FEATURESCALER** A scikit learn scaler object to scale in the input features.
+
+  **-c, --crossValidationFolds CROSSVALIDATIONFOLDS** The number of cross validation folds to execute.
+
+  **-a, --accuracyMetric ACCURACYMETRIC** A scikit learn accuracy metric for training.
+
+  **-p, --predictFeatureTable PREDICTFEATURETABLE** A unclassified feature table to be predicted by the model.
+
+  **-e, --listErrors** Include to see a list of which sequences in the training dataset were missclassified.
+
+  **-v, --verbose** Inlcude to get more detailed output.
 
 ## Lab presentations and Thesis Committee Presentations
 
