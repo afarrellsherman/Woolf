@@ -2,8 +2,8 @@
 
 ####################################
 #
-# unitTests.py
-# Testing code for the Woolf Pipeline
+# test_featureTable.py
+# Testing code for the Woolf Pipeline featureTable module
 #
 ####################################
 
@@ -12,8 +12,6 @@ from woolf import featureTable
 #from woolf import woolfClassifier
 import os.path
 
-###############################################################################################
-# Testing 
 
 def test_feadfasta_classA():
 	infile = 'fastas/test_classA.fasta'
@@ -61,6 +59,8 @@ def test_saveCSV_classBD_binaryTable():
 
 	featureTable.saveCSV(bTable, outputfilename)
 	assert os.path.isfile(outputfilename)
+
+
 
 
 #for use when writing testing cases
