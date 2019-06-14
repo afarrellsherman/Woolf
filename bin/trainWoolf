@@ -132,7 +132,7 @@ if args.listErrors:
 if args.predictFeatureTable:
 	print("Predicting novel instances")
 	try:
-		prediction, score = predictWoolf(woolf, args.predictFeatureTable)
+		prediction, score = woolfClassifier.predictWoolf(woolf, args.predictFeatureTable)
 		print(prediction)
 		if score:
 			print("Score on test data: " + str(score))

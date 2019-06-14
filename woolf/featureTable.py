@@ -71,4 +71,5 @@ def predictDataFeatureTable(sequenceFiles):
 
 ### saveCSV - saves a datatable in a file with a given name
 def saveCSV(dataTable, filename):
-	return dataTable.to_csv(filename,index=None, header=True)
+	shuffled = dataTable.sample(frac=1)
+	return shuffled.to_csv(filename,index=None, header=True)
