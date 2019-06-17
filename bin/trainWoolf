@@ -124,7 +124,7 @@ print("~~~~~~               ~~~~~~")
 #Print misclassified sequences
 if args.listErrors:
 	print("Listing misclassified instances")
-	posErrors, negErrors = findMisclassified(woolf, args.featureTable)
+	posErrors, negErrors = woolfClassifier.findMisclassified(woolf, args.featureTable)
 	print("misclassified as positive class:\n " + str(posErrors))
 	print("misclassified as negative class:\n " + str(negErrors))
 
