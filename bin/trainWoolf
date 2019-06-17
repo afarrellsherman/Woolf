@@ -63,11 +63,6 @@ args = parser.parse_args()
 
 ##################################################################################
 
-#Check that arugments were provided
-if len(sys.argv)==1:
-	parser.print_help(sys.stderr)
-	sys.exit(1)
-
 #update learning parameters if needed
 scalingType = args.featureScaler if args.featureScaler else scalingType
 scoringMetric = args.accuracyMetric if args.accuracyMetric else scoringMetric

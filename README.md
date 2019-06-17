@@ -39,7 +39,7 @@ $ pip install woolf
 Run the following on the comand line, with both FASTA files in the current working directory:
 
 ```
-featureTablefromFASTA [-h] [-c COMPARISONFILENAME] [-f FOLDER]
+featureTable [-h] [-c COMPARISONFILENAME] [-f FOLDER]
                              [-b | -t] [-p POSFASTA [POSFASTA ...]]
                              [-n NEGFASTA [NEGFASTA ...]]
 ```

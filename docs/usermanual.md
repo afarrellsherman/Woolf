@@ -14,30 +14,30 @@ or not Class A (one of either class B, C, or D).
 
 <!-- Add instructions for downloading example files, see https://github.com/afarrellsherman/Woolf/issues/9 -->
 
--   FASTA amino acid sequence files
-    -   `ClassA.fasta`
-    -   `ClassBCD.fasta`
-    -   `ClassA_test.fasta`
-    -   `ClassBCD_test.fasta`
-    -   `unknownClass.fasta`
--   Python Scripts
-    -   `featureCSVfromFASTA.py`
-    -   `trainWoolf.py`
-
+FASTA amino acid sequence files:
+  -   `ClassA.fasta`
+  -   `ClassBCD.fasta`
+  -   `ClassA_test.fasta`
+  -   `ClassBCD_test.fasta`
+  -   `unknownClass.fasta`
 
 ## Installation
+
+The Woolf Classifier Building Pipeline can be installed in one line (including dependancies) with:
+
+```sh
+$ pip install woolf
+```
 
 ### Dependences
 
 The Woolf Classifier Building Pipeline has several dependences you will
 want to install into your python environment. The commands for
 installation and links to the documentation are provided below. Also
-note that it is best practice to store python inside a virtual
-environment (see
+note that it is best practice to store python projects inside a virtual
+environment (see <https://packaging.python.org/guides/installing-using-pip-and-virtualenv/>)
+
 <!-- Note: `conda` has a different virtual environment setup, might be worth changing this link -->
-<https://packaging.python.org/guides/installing-using-pip-and-virtualenv/>)
-
-
 
 #### `Python3`
 
@@ -48,8 +48,6 @@ Install from: <https://realpython.com/installing-python/>
 
 #### `Biopython`
 
-Install with:
-
 ```sh
 $ pip install biopython
 ```
@@ -57,8 +55,6 @@ $ pip install biopython
 Documentation: <https://biopython.org/wiki/Packages>
 
 #### `Scikit-Learn`
-
-Install with:
 
 ```sh
 $ pip install -U numpy scipy scikit-learn
@@ -68,8 +64,6 @@ Documentation: <https://scikit-learn.org/0.16/install.html>
 
 #### `Pandas`
 
-Install with:
-
 ```sh
 $ pip install pandas
 ```
@@ -78,15 +72,11 @@ Documentation: https://pandas.pydata.org/pandas-docs/stable/install.html
 
 #### `Argparse`
 
-Only required if you have python >3.2.
-
-Install with:
-
 ```sh
 $ pip install argparse
 ```
 
-Documentation: <https://pypi.org/project/argparse/>
+Only required if you have python >3.2. Documentation: <https://pypi.org/project/argparse/>
 
 #### `Sys` and `Ast`
 
@@ -100,25 +90,9 @@ $ pip install sys
 $ pip install ast
 ```
 
-### NOTE: Using the Command Line
-
-The scripts to build a Woolf Model run on the command line. The basic
-structure of a command to run a script is:
-
-```sh
-$ python scriptName.py arguments -option
-```
-
-To get help for any command, run it with the help option:
-
-```sh
-$ python scriptName.py -h
-```
-
 ## Overview: Steps in Building a Woolf Model
 
-Woolf Classifiers can be built using a few simple commands on the
-command line in 6 steps.
+Woolf Classifiers can be built using two simple command line scripts in 6 steps.
 
 (1) Input FASTA files are converted into a feature table based on length
 and amino acid composition before (2) being used to train a model with
@@ -130,6 +104,82 @@ classifier in each model (5) and predict the classes of unknown proteins
 (6).
 
 ![](media/image1.png)
+
+### STEP 0: Some advice and troubleshooting
+
+The two commands used in the the pipeline are:
+
+```sh
+featureTable
+usage: featureTable [-h] [-c COMPARISONFILENAME] [-f FOLDER] [-b | -t]
+                    [-p POSFASTA [POSFASTA ...]] [-n NEGFASTA [NEGFASTA ...]]
+                    [-u UNKNOWNFASTA [UNKNOWNFASTA ...]]
+
+Build a CVS feature table from amino acid FASTA files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c COMPARISONFILENAME, --comparisonFileName COMPARISONFILENAME
+                        an identifying tag for all output files
+  -f FOLDER, --folder FOLDER
+                        A folder to contain the output files
+  -b, --binary
+  -t, --predict
+  -p POSFASTA [POSFASTA ...], --posFasta POSFASTA [POSFASTA ...]
+                        one or more FASTA files containing amino acid
+                        sequences belonging to the positive class
+  -n NEGFASTA [NEGFASTA ...], --negFasta NEGFASTA [NEGFASTA ...]
+                        one or more FASTA files containing amino acid
+                        sequences belonging to the negative class
+  -u UNKNOWNFASTA [UNKNOWNFASTA ...], --unknownFasta UNKNOWNFASTA [UNKNOWNFASTA ...]
+                        one or more FASTA files containing amino acid
+                        sequences of unknown function
+```
+
+```sh
+trainWoolf
+usage: trainWoolf [-h] [-k | -f] [-n NNEIGHBORS] [-t NTREES] [-l MINLEAFSIZE]
+                  [-s FEATURESCALER] [-c CROSSVALIDATIONFOLDS]
+                  [-a ACCURACYMETRIC] [-p PREDICTFEATURETABLE] [-e] [-v]
+                  featureTable
+
+create a Woolf Model based a feature table
+
+positional arguments:
+  featureTable          a CSV file containing feature data from a set of
+                        sequences
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -k, --kNN
+  -f, --randomForest
+  -n NNEIGHBORS, --nNeighbors NNEIGHBORS
+                        number of neighboors for kNN classifier, ranges are
+                        expresed as low-hi,jump (1-7,2 would test 1,3,5 and 7)
+  -t NTREES, --nTrees NTREES
+                        number of trees for random forest classifier, ranges
+                        are expresed as low-hi,jump (1-7,2 would test 1,3,5
+                        and 7)
+  -l MINLEAFSIZE, --minLeafSize MINLEAFSIZE
+                        minimum size of leaves in each tree of the random
+                        forest classifier, ranges are expresed as low-hi,jump
+                        (1-7,2 would test 1,3,5 and 7)
+  -s FEATURESCALER, --featureScaler FEATURESCALER
+                        a scikit learn scaler object to scale in the input
+                        features
+  -c CROSSVALIDATIONFOLDS, --crossValidationFolds CROSSVALIDATIONFOLDS
+                        the number of cross validation folds to execute
+  -a ACCURACYMETRIC, --accuracyMetric ACCURACYMETRIC
+                        a scikit learn accuracy metric for training
+  -p PREDICTFEATURETABLE, --predictFeatureTable PREDICTFEATURETABLE
+                        a unclassified feature table to be predicted by the
+                        model
+  -e, --listErrors      include to see a list of which sequences in the
+                        training dataset were missclassified
+  -v, --verbose         inlcude to get more detailed output
+```
+
+The `-h` option for either of these commands will display this help message.  If you are using a virtual environment make sure it is activated!
 
 ### STEP 1: Creating the feature tables
 
@@ -143,7 +193,7 @@ modifications to the data, and one unlabeled table for prediction.
 Training:
 
 ```sh
-$ python featureCSVfromFASTA.py --binary -c AvsNotA -f CSVfolder -pf classA.fasta -nf classBCD.fasta
+$ featureTable --binary --comparisonFileName AvsNotA --folder CSVfolder --posFasta classA.fasta --negFasta classBCD.fasta
 ```
 
 This command creates a binary (not prediction because it has class
@@ -153,13 +203,13 @@ class, and the Class B, C, and D sequences as the negative class.
 Testing:
 
 ```sh
-$ python featureCSVfromFASTA.py --binary -c AvsNotA_TEST -f CSVfolder -pf classA_test.fasta -nf classBCD_test.fasta
+$ featureTable --binary --comparisonFileName AvsNotA_TEST --folder CSVfolder --posFasta classA_test.fasta -negFasta classBCD_test.fasta
 ```
 
 Prediction:
 
 ```sh
-$ python featureCSVfromFASTA.py --predict -c AvsNotA_UNKNOWN -f CSVfolder -pf unknownClass.fasta
+$ featureTable --predict --comparisonFileName AvsNotA_UNKNOWN --folder CSVfolder --unknownFasta unknownClass.fasta
 ```
 
 After each command you should get confirmation from the command line
@@ -177,7 +227,7 @@ First build a classifier using a kNN algorithm trained on the training
 feature table:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv
+$ trainWoolf --kNN CSVfolder/AvsNotA.csv
 ```
 
 The output should look like this:
@@ -194,7 +244,7 @@ Best Params:{'clf__n_neighbors': 1}
 
 This indicates that the model achieved an f1-measure accuracy score of
 0.91 using `k=1` as an algorithm parameter. You can get more information
-about the model by running the command with the `-v` option. The
+about the model by running the command with the `--verbose` option. The
 results should like this:
 
 ```
@@ -219,24 +269,11 @@ Min: 0.919719472833318
 
 There is no rule about what makes an accuracy metric “good,” but each
 time you get results from the Woolf model, you can do some reasoning
-about how well your classifier is working.
+about how well your classifier is working. Examine your results and determine if you find the accuracy and hyperparameter values in the range you were looking for.
 
-Classifiers that are doing well will generally:
-
--   Have accuracy measures above:
-    -   50% accuracy
-    -   0.5 f1-score
-    -   0.3 MCC
--   Have `k` values over 100x the number of instances
-    -   Ex: if you have 200 instances, `k` should be at least 2
-    -   Greater values of `k` indicate better separation between the
-        classes.
--   Have fewer trees than the maximum argument provided
--   Have more instances per leaf than the minimum argument provided
-
-However, the main goal of the Woolf Pipeline is to provide useful
+Keep in mind that the main goal of the Woolf Pipeline is to provide useful
 hypothesis generating biologically relevant insight into protein
-sequences, not to create the best possible computational model, so no
+sequences, not to create the best possible computational model, and no
 definitive number will be able to tell you if a classifier is “good
 enough.”
 
@@ -247,14 +284,14 @@ the classification power of Woolf Classifiers.
 
 **Table 4.1** User specified parameters
 
-  | Parameter                                                         | Default Option     | Option Flag | How to Format Input
---|-------------------------------------------------------------------|--------------------|-------------|--------------------
-  | Feature scaling type                                              | Min-Max Scaling    | `-s`        | StandardScaler<br>MaxAbsScaler
-  | Cross-validation folds                                            | 5                  | `-c`        | 10<br>20
-  | Accuracy metric                                                   | MCC                | `-a`        | accuracy<br>f1
-  | Number of neighbors (kNN only) | range from 1 to 20 | `-n`        | 5<br>1-20<br>1-30,5
-  | Number of trees (random forest only)                              | range from 1 to 20 | `-t`        | 5<br>1-20<br>1-30,5
-  | Minimum instances per leaf (random forest only)                   | 10, 15, 20, 25, 30 | `-l`        | 10<br>10-0<br>10-30,5
+  | Parameter                                                         | Default Option     | Option Flag              | How to Format Input
+--|-------------------------------------------------------------------|--------------------|--------------------------|--------------------
+  | Feature scaling type                                              | Min-Max Scaling    | `--featureScaler`        | StandardScaler<br>MaxAbsScaler
+  | Cross-validation folds                                            | 5                  | `--crossValidationFolds` | 10<br>20
+  | Accuracy metric                                                   | MCC                | `--accuracyMetric`       | accuracy<br>f1
+  | Number of neighbors (kNN only)                                    | range from 1 to 20 | `--nNeighbors`           | 5<br>1-20<br>1-30,5
+  | Number of trees (random forest only)                              | range from 1 to 20 | `--nTrees`               | 5<br>1-20<br>1-30,5
+  | Minimum instances per leaf (random forest only)                   | 10, 15, 20, 25, 30 | `--minLeafSize`          | 10<br>10-0<br>10-30,5
 
 
 **Hyperparameter Ranges**
@@ -274,7 +311,7 @@ For example, to create a kNN model that tests the `k` values of
 1, 3, 5, and 7, you could use:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -n 1-7,2
+$ trainWoolf -kNN CSVfolder/AvsNotA.csv --nNeighbors 1-7,2
 ```
 
 **Cross-Validation Folds**
@@ -283,7 +320,7 @@ To create a model with 10 rather than 5 cross-validation folds, run the
 command like this:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -c 10
+$ trainWoolf -kNN CSVfolder/AvsNotA.csv --crossValidationFolds 10
 ```
 
 Note that the number of cross validation folds must be greater than 1 so
@@ -297,13 +334,14 @@ in each split to train the model.
 
 Scaling is the process of modifying the center and range of the data in
 each feature. It is used to modify input data distributions to meet the
-assumptions most algorithms make about their input data \[100\]. Random
+assumptions most algorithms make about their input data. Random
 forests are tree based and do not require scaling, however, with
 algorithms like kNNs scaling the data prevents features with different
-ranges from unduly influencing the prediction \[100\].
+ranges from unduly influencing the prediction.
 
 Table 4.2 shows the range of different scalar types and when they might
 be useful.
+
 **Table 4.2** Possible Scaler Types
 
 Scaler Name    | Function                                                                      | Suggested Use Cases
@@ -318,24 +356,7 @@ To change the scalar type from the default Min-Max Scalar to the
 Standard Scalar, use this command:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -s StandardScaler
-```
-
-To remove scaling to create a random forest Model, use this command:
-
-```sh
-$ python trainWoolf.py -f CSVfolder/AvsNotA.csv -s None
-```
-
-You should see results like this:
-
-```
-Building Random Forest Woolf Model...
-Training Model...
-~~~~~~ RESULTS ~~~~~~
-Score of best classifier: 0.8285663419177125
-Best Params:{'clf__min_samples_leaf': 13, 'clf__n_estimators':
-11}
+$ trainWoolf --kNN CSVfolder/AvsNotA.csv --featureScaler StandardScaler
 ```
 
 **Accuracy Metric**
@@ -350,7 +371,7 @@ To use percentage accuracy as the accuracy metric instead of the default
 MCC, use this command:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -v -a accuracy
+$ python trainWoolf.py --kNN CSVfolder/AvsNotA.csv --verbose --accuracyMetric accuracy
 ```
 
 All possible accuracy metrics are described in Table 4.3.
@@ -369,12 +390,12 @@ MCC       | Combination of all terms from confusion matrix                      
 ### STEP 5: Listing Misclassified Proteins
 
 To determine which proteins are misclassified by your final model, run
-the script again with the `-e` option. Assuming your final model was a
+the script again with the `--listErrors` option. Assuming your final model was a
 kNN trained with percentage accuracy and 3-10 as possible k values, you
 would run the following command:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -a accuracy -n 4-10 -e
+$ python trainWoolf.py --kNN CSVfolder/AvsNotA.csv --accuracyMetric accuracy --nNeighbors 3-10 --listErrors
 ```
 
 You should get results that look like this:
@@ -436,7 +457,7 @@ the original sequences for further analysis.
 
 The final step in the Woolf Classification Building Pipeline is to
 actually predict the function of new proteins. This is done with the
-`-p` option. Before you do, it is useful to get a final accuracy
+`--predictFeatureTable` option. Before you do, it is useful to get a final accuracy
 measure with data that has never been through the model up until now.
 This is done with the same option flag.
 
@@ -444,7 +465,7 @@ To test a model with the test data feature table you made in step one
 use the following command:
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -p CSVfolder/AvsNotA_TEST.csv
+$ python trainWoolf.py --kNN CSVfolder/AvsNotA.csv --predictFeatureTable CSVfolder/AvsNotA_TEST.csv
 ```
 
 You should see results like this:
@@ -599,7 +620,7 @@ following command. Remember that `AvsNotA_UNKNOWN.csv` is a feature table
 file you generated in step 1.
 
 ```sh
-$ python trainWoolf.py -k CSVfolder/AvsNotA.csv -p CSVfolder/AvsNotA_UNKNOWN.csv
+$ python trainWoolf.py --kNN CSVfolder/AvsNotA.csv --predictFeatureTable CSVfolder/AvsNotA_UNKNOWN.csv
 ```
 
 The results should look like this:
@@ -633,5 +654,5 @@ Predicting novel instances
 
 And that is it! You have built a Woolf Classifier that can predict if
 novel β-lacamases are Type A or not Type A. Using the barcodes
-provided in by the `-p` option, you can further study these sequences
+provided in by the `--predictFeatureTable` option, you can further study these sequences
 using any conventional experimental or computational technique.
