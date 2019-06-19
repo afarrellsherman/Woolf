@@ -12,7 +12,11 @@ or not Class A (one of either class B, C, or D), as well as learning how to modi
 
 ### Files Provided
 
-<!-- Add instructions for downloading example files, see https://github.com/afarrellsherman/Woolf/issues/9 -->
+Files can be downloaded from: <https://osf.io/gtjfq/download>, or with the following command:
+
+```sh
+$ curl -Lo tutorialfiles.zip https://osf.io/gtjfq/download
+```
 
 FASTA amino acid sequence files:
   -   `ClassA.fasta`
