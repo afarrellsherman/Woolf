@@ -33,7 +33,6 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 	for file in PosSeqFiles:
 		records = readfasta(file)
 		for rec in records:
-			#aSeq = ProteinAnalysis(str(rec.seq))
 			seqDict = ProteinAnalysis(str(rec.seq)).get_amino_acids_percent()
 			seqDict['Class'] = sequenceClass
 			seqDict['Length'] = len(rec.seq)
@@ -45,7 +44,6 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 	for file in NegSeqFiles:
 		records = readfasta(file)
 		for rec in records:
-			#aSeq = ProteinAnalysis(str(rec.seq))
 			seqDict = ProteinAnalysis(str(rec.seq)).get_amino_acids_percent()
 			seqDict['Class'] = sequenceClass
 			seqDict['Length'] = len(rec.seq)
@@ -55,7 +53,7 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 	return pd.DataFrame(seqDicts)
 
 ### predictDataFeatureTable -
-def predictDataFeatureTable(sequenceFiles):
+def predictFeatureTable(sequenceFiles):
 	seqDicts = []
 
 	#add each file with NO class identifier
