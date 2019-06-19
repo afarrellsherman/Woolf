@@ -13,7 +13,7 @@ setup(name='woolf',
       url='https://github.com/afarrellsherman/Woolf',
       license='MIT',
       packages=['woolf'],
-      scripts=[os.path.join('bin', 'featureTablefromFASTA'),
+      scripts=[os.path.join('bin', 'featureTable'),
                os.path.join('bin', 'trainWoolf')],
       install_requires=[
             'pandas',

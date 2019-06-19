@@ -63,11 +63,6 @@ args = parser.parse_args()
 
 ##################################################################################
 
-#Check that arugments were provided
-if len(sys.argv)==1:
-	parser.print_help(sys.stderr)
-	sys.exit(1)
-
 #update learning parameters if needed
 scalingType = args.featureScaler if args.featureScaler else scalingType
 scoringMetric = args.accuracyMetric if args.accuracyMetric else scoringMetric
@@ -124,7 +119,7 @@ print("~~~~~~               ~~~~~~")
 #Print misclassified sequences
 if args.listErrors:
 	print("Listing misclassified instances")
-	posErrors, negErrors = findMisclassified(woolf, args.featureTable)
+	posErrors, negErrors = woolfClassifier.findMisclassified(woolf, args.featureTable)
 	print("misclassified as positive class:\n " + str(posErrors))
 	print("misclassified as negative class:\n " + str(negErrors))
 
@@ -132,7 +127,7 @@ if args.listErrors:
 if args.predictFeatureTable:
 	print("Predicting novel instances")
 	try:
-		prediction, score = predictWoolf(woolf, args.predictFeatureTable)
+		prediction, score = woolfClassifier.predictWoolf(woolf, args.predictFeatureTable)
 		print(prediction)
 		if score:
 			print("Score on test data: " + str(score))

@@ -64,7 +64,7 @@ if args.binary:
 elif args.predict:
 	if args.posFasta or args.negFasta:
 		print("Ignoring inputs to --posFasta and --negFasta to create a prediction feature table")
-	if args.posFasta:
+	if args.unknownFasta:
 		print(args.unknownFasta)
 		seqFeatureTable = featureTable.predictDataFeatureTable(args.unknownFasta)
 		featureTable.saveCSV(seqFeatureTable, fileName)

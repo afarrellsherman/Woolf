@@ -3,21 +3,23 @@
 #getResults.py
 
 
-import trainWoolf
+from woolf import trainWoolf
 import pandas as pd
 #from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler #minMax normalization
 
 #files to save to
-accuracyFile = 'performance_fOREST.csv'
+accuracyFile = 'performance_kNN.csv'
 
-comparisons = ['CSVs/AvNotA.csv','CSVs/AvB.csv','CSVs/AvC.csv','CSVs/AvD.csv'] #paths to files
-classifierType = 'fOREST' #'kNN' or 'fOREST'
+comparisons = ['CSVs/AvNotA.csv','CSVs/AvB.csv','CSVs/AvC.csv','CSVs/AvD.csv','CSVs/BvNotB.csv','CSVs/CvNotC.csv','CSVs/DvNotD.csv'] #paths to files
+classifierType = 'kNN' #'kNN' or 'fOREST'
 #pGrid = {'clf__n_neighbors': range(1,20)}
 pGrid = {'clf__n_estimators': range(1,15,2), 'clf__min_samples_leaf': range(10,30,3)}
 scalers = ['MinMaxScaler', 'StandardScaler', 'MaxAbsScaler', 'RobustScaler', 'None']
 cvFolds = 5
 scoringMs = ['f1','accuracy','MCC']
-nNhrs = nTrs = minL = 0 #not used because pGrid is used
+nNhrs = range(1,20)
+nTrs = range(1,15,2)
+minL = range(10,30,3)
 
 resultsDictList = []
 
