@@ -244,7 +244,7 @@ This indicates that the model achieved an MCC score of
 0.93 using `k=1` as an algorithm parameter. You can get more information
 about the model by running the command with the `--verbose` option as shown below:
 
-```sh
+```
 $ trainWoolf --kNN CSVfolder/AvsNotA.csv --verbose
 
 Building kNN Woolf Model...
@@ -380,11 +380,11 @@ All possible accuracy metrics are described in Table 4.3.
 
 Metric    | Description                                                                         | Function                                                                                  | Suggested Use Cases
 ----------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------
-accuracy  | Percentage of instances classified correctly                                        | $\frac{TP + TN}{TP + FP + FN + TN}$                                                     | Balanced class distributions of instances
-recall    | Proportion of actually positive instances that are correctly identified as positive | $\frac{\text{TP}}{TP + FN}$                                                           | When the most important result it to identify all the positive cases
-precision | Proportion of predicted positive instances that are actually positive               | $\frac{\text{TP}}{TP + FP}$                                                             | When it is important to make sure all the predicted positives are really positive
-f1        | Harmonic mean of recall and precision                                               | $\frac{2(p \times r)}{p + r}$                                                           | When both recall and precision are important
-MCC       | Combination of all terms from confusion matrix                                      | \begin{equation*}\frac{TP\  \times \ TN - FP\  \times FN}{\sqrt{(TP + FN)(TP + FP)(TN + FP)(TN + FN)}}\end{equation*} | Small datasets in which both positive and negative classes are important
+accuracy  | Percentage of instances classified correctly                                        | ![equation](https://latex.codecogs.com/gif.latex?accuracy%3D%5Cfrac%7BTP&plus;TN%7D%7BTP&plus;FP&plus;FN&plus;TN%7D)                                                     | Balanced class distributions of instances
+recall    | Proportion of actually positive instances that are correctly identified as positive | ![equation](https://latex.codecogs.com/gif.latex?r%3D%5Cfrac%7BTP%7D%7BTP&plus;FN%7D)                                                           | When the most important result it to identify all the positive cases
+precision | Proportion of predicted positive instances that are actually positive               | ![equation](https://latex.codecogs.com/gif.latex?p%3D%5Cfrac%7BTP%7D%7BTP&plus;FP%7D))                                                             | When it is important to make sure all the predicted positives are really positive
+f1        | Harmonic mean of recall and precision                                               | ![equation](https://latex.codecogs.com/gif.latex?f_1%3D%5Cfrac%7B2pr%7D%7Bp&plus;r%7D)                                                           | When both recall and precision are important
+MCC       | Combination of all terms from confusion matrix                                      | ![equation](https://latex.codecogs.com/gif.latex?MCC%3D%5Cfrac%7BTP%20%5Cast%20TN%20-%20FP%20%5Cast%20FN%7D%20%7B%5Csqrt%7BTP&plus;FN%7D%7D) | Small datasets in which both positive and negative classes are important
 
 ### STEP 5: Listing Misclassified Proteins
 
