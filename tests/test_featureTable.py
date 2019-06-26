@@ -11,50 +11,55 @@ import pytest
 from woolf import featureTable
 import os.path
 
+testdata = os.path.join(os.path.dirname(__file__), 'data')
+outputdata = os.path.join(os.path.dirname(__file__), 'output')
+testclasses = [os.path.join(testdata, f) for f in os.listdir(testdata)]
+testclasses.sort()
+classA, classB, classC, classD = testclasses[1:]
+
+def test_file_order():
+	assert classA.endswith("classA.fasta")
+	assert classB.endswith("classB.fasta")
+	assert classC.endswith("classC.fasta")
+	assert classD.endswith("classD.fasta")
 
 def test_feadfasta_classA():
-	infile = 'data/test_classA.fasta'
-	seqs = featureTable.readfasta(infile)
-	print(len(seqs))
+	seqs = featureTable.readfasta([classA])
+
 	assert len(seqs) == 15
 	assert len(seqs[1]) == 304
 
 def test_binaryFeatureTable_AvB():
-	infileA = ['data/test_classA.fasta']
-	infileB = ['data/test_classB.fasta']
-	
-	bTable = featureTable.binaryFeatureTable(infileA, infileB)
+	infileA =  [classA]
+	infileB =  [classB]
+
+	bTable = featureTable.binaryFeatureTable([classA], [classB])
 	assert list(bTable.columns) == ['A', 'C', 'Class', 'D', 'E', 'F', 'G', 'H', 'I', 'ID', 'K', 'L', 'Length', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	assert len(bTable.index) == 30
 
 def test_binaryFeatureTable_AvNotA():
-	infileA = ['data/test_classA.fasta']
-	infileNotA = ['data/test_classB.fasta', 'data/test_classC.fasta', 'data/test_classD.fasta']
-	
-	bTable = featureTable.binaryFeatureTable(infileA, infileNotA)
+	bTable = featureTable.binaryFeatureTable([classA], [classB, classC, classD])
 	assert list(bTable.columns) == ['A', 'C', 'Class', 'D', 'E', 'F', 'G', 'H', 'I', 'ID', 'K', 'L', 'Length', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	assert len(bTable.index) == 71
 
 def test_predictFeatureTable_CD():
-	infile = ['data/test_classD.fasta', 'data/test_classC.fasta']
-	
-	pTable = featureTable.predictFeatureTable(infile)
+	pTable = featureTable.predictFeatureTable([classD, classC])
 	assert list(pTable.columns) == ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'ID', 'K', 'L', 'Length', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	assert len(pTable.index) == 41
 
 def test_saveCSV_classC_predictTable():
-	infile = ['data/test_classC.fasta']
+	infile =  [classC]
 	pTable = featureTable.predictFeatureTable(infile)
-	outputfilename = "output/classC_predictTable"
+	outputfilename = os.path.join(outputdata, 'classC_predictTable')
 
 	featureTable.saveCSV(pTable, outputfilename)
 	assert os.path.isfile(outputfilename)
 
 def test_saveCSV_classBD_binaryTable():
-	infileB = ['data/test_classB.fasta']
-	infileD = ['data/test_classD.fasta']
+	infileB =  testclasses[2:3]
+	infileD =  testclasses[4:]
 	bTable = featureTable.binaryFeatureTable(infileB, infileD)
-	outputfilename = "output/classBD_binaryTable"
+	outputfilename = os.path.join(outputdata, 'classBD_binaryTable')
 
 	featureTable.saveCSV(bTable, outputfilename)
 	assert os.path.isfile(outputfilename)
