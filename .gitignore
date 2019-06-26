@@ -1,4 +1,5 @@
 __pycache__
+.pytest_cache/
 woolf.egg-info/
 output/
-.gitignore
+tests/output
