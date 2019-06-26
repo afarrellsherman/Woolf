@@ -11,6 +11,15 @@ import pytest
 from woolf import woolfClassifier
 import os.path
 
+testdata = os.path.join(os.path.dirname(__file__), 'data')
+outputdata = os.path.join(os.path.dirname(__file__), 'output')
+testclasses = [os.path.join(testdata, f) for f in os.listdir(testdata)]
+testclasses.sort()
+classBDtable = testclasses[0]
+
+def test_file_order():
+	assert classBDtable.endswith("classBD_binaryTable.csv")
+
 def test_scaler_selector_MaxAbs():
 	testString = 'MaxAbsScaler'
 	assert str(woolfClassifier.scaler_selector(testString)) == "MaxAbsScaler(copy=True)"
@@ -65,8 +74,8 @@ def test_trainModel_k915kNN():
 	nNhrs = [9,10,11,12,13,14,15]
 	nTrs = range(1,15,2)
 	minL = range(10,30,3)
-	inputCSV = 'data/classBD_binaryTable.csv'
-	
+	inputCSV = classBDtable
+
 	model = woolfClassifier.buildWoolf(classifierType, scalerString, cvFolds, scoringM, nNhrs, nTrs, minL)
 	woolfClassifier.trainModel(model, inputCSV)
 	assert str(type(model)) == "<class 'sklearn.model_selection._search.GridSearchCV'>"
@@ -82,8 +91,8 @@ def test_findMisclassified_accuracykNN():
 	nNhrs = range(15,20)
 	nTrs = range(1,15,2)
 	minL = range(10,30,3)
-	inputCSV = 'data/classBD_binaryTable.csv'
-	
+	inputCSV = classBDtable
+
 	model = woolfClassifier.buildWoolf(classifierType, scalerString, cvFolds, scoringM, nNhrs, nTrs, minL)
 	woolfClassifier.trainModel(model, inputCSV)
 	misAsPos, misAsNeg = woolfClassifier.findMisclassified(model, inputCSV)
@@ -99,8 +108,8 @@ def test_predictWoolf_f1fOREST():
 	nNhrs = range(15,20)
 	nTrs = range(1,15,2)
 	minL = range(10,30,3)
-	inputCSV = 'data/classBD_binaryTable.csv'
-	
+	inputCSV = classBDtable
+
 	model = woolfClassifier.buildWoolf(classifierType, scalerString, cvFolds, scoringM, nNhrs, nTrs, minL)
 	woolfClassifier.trainModel(model, inputCSV)
 	resultsDict, score = woolfClassifier.predictWoolf(model, inputCSV)
