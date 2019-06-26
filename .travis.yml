@@ -1,0 +1,22 @@
+dist: xenial
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8-dev"  # 3.6 development branch
+  - "nightly"
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install .
+# command to run tests
+script:
+  - pytest
+
+matrix:
+  allow_failures:
+    - python:
+      - "3.8-dev"
+      - "nightly"
