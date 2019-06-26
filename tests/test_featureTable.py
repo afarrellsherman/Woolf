@@ -30,9 +30,6 @@ def test_feadfasta_classA():
 	assert len(seqs[1]) == 304
 
 def test_binaryFeatureTable_AvB():
-	infileA =  [classA]
-	infileB =  [classB]
-
 	bTable = featureTable.binaryFeatureTable([classA], [classB])
 	assert list(bTable.columns) == ['A', 'C', 'Class', 'D', 'E', 'F', 'G', 'H', 'I', 'ID', 'K', 'L', 'Length', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	assert len(bTable.index) == 30
@@ -48,17 +45,14 @@ def test_predictFeatureTable_CD():
 	assert len(pTable.index) == 41
 
 def test_saveCSV_classC_predictTable():
-	infile =  [classC]
-	pTable = featureTable.predictFeatureTable(infile)
+	pTable = featureTable.predictFeatureTable([classC])
 	outputfilename = os.path.join(outputdata, 'classC_predictTable')
 
 	featureTable.saveCSV(pTable, outputfilename)
 	assert os.path.isfile(outputfilename)
 
 def test_saveCSV_classBD_binaryTable():
-	infileB =  testclasses[2:3]
-	infileD =  testclasses[4:]
-	bTable = featureTable.binaryFeatureTable(infileB, infileD)
+	bTable = featureTable.binaryFeatureTable([infileB], [infileD])
 	outputfilename = os.path.join(outputdata, 'classBD_binaryTable')
 
 	featureTable.saveCSV(bTable, outputfilename)
