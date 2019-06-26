@@ -24,7 +24,7 @@ def test_file_order():
 	assert classD.endswith("classD.fasta")
 
 def test_feadfasta_classA():
-	seqs = featureTable.readfasta([classA])
+	seqs = featureTable.readfasta(classA)
 
 	assert len(seqs) == 15
 	assert len(seqs[1]) == 304
@@ -52,7 +52,7 @@ def test_saveCSV_classC_predictTable():
 	assert os.path.isfile(outputfilename)
 
 def test_saveCSV_classBD_binaryTable():
-	bTable = featureTable.binaryFeatureTable([infileB], [infileD])
+	bTable = featureTable.binaryFeatureTable([classB], [classD])
 	outputfilename = os.path.join(outputdata, 'classBD_binaryTable')
 
 	featureTable.saveCSV(bTable, outputfilename)
