@@ -15,10 +15,13 @@ install:
 
 # command to run tests
 script:
-  - pytest
+  - pytest --cov=./
 
 matrix:
   allow_failures:
     - python:
       - "3.8-dev"
       - "nightly"
+
+after_success:
+  - codecov

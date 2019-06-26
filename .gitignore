@@ -3,3 +3,4 @@ __pycache__
 woolf.egg-info/
 output/
 tests/output
+.coverage*
