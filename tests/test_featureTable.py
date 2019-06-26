@@ -44,16 +44,16 @@ def test_predictFeatureTable_CD():
 	assert list(pTable.columns) == ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'ID', 'K', 'L', 'Length', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
 	assert len(pTable.index) == 41
 
-def test_saveCSV_classC_predictTable():
-	pTable = featureTable.predictFeatureTable([classC])
-	outputfilename = os.path.join(outputdata, 'classC_predictTable')
-
-	featureTable.saveCSV(pTable, outputfilename)
-	assert os.path.isfile(outputfilename)
-
-def test_saveCSV_classBD_binaryTable():
-	bTable = featureTable.binaryFeatureTable([classB], [classD])
-	outputfilename = os.path.join(outputdata, 'classBD_binaryTable')
-
-	featureTable.saveCSV(bTable, outputfilename)
-	assert os.path.isfile(outputfilename)
+# def test_saveCSV_classC_predictTable():
+# 	pTable = featureTable.predictFeatureTable([classC])
+# 	outputfilename = os.path.join(outputdata, 'classC_predictTable')
+#
+# 	featureTable.saveCSV(pTable, outputfilename)
+# 	assert os.path.isfile(outputfilename)
+#
+# def test_saveCSV_classBD_binaryTable():
+# 	bTable = featureTable.binaryFeatureTable([classB], [classD])
+# 	outputfilename = os.path.join(outputdata, 'classBD_binaryTable')
+#
+# 	featureTable.saveCSV(bTable, outputfilename)
+# 	assert os.path.isfile(outputfilename)
