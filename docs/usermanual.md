@@ -223,7 +223,7 @@ into positive (Class A)
 and negative (Class B, C, and D),
 with test data reserved for a final accuracy measure,
 and an unknown set of data.
-Use featureCSVfromFasta.py to create three CSV based feature tables,
+Use the `featureTable` script to create three CSV-based feature tables,
 one for training,
 one final one for testing after you have made all the modifications to the data,
 and one unlabeled table for prediction.
