@@ -483,9 +483,9 @@ misclassified as negative class:
 The output lists the proteins in the training data that were either
 
 - misclassified as Type A but actually belong to one of the other classes
-  (misclassified as positive)
+  (misclassified as positive class)
 - or were misclassified as _not_ Type A but in fact _are_ Type A
-  (misclassified as negative).
+  (misclassified as negative class).
 
 These barcodes can be used to find the original sequences for further analysis.
 
@@ -517,7 +517,7 @@ Best Params:{'clf__n_neighbors': 1}
 ~~~~~~               ~~~~~~
 Predicting novel instances
 {'WP_032017448.1': 0, 'WP_013188473.1': 1, 'WP_060437608.1': 0, 'WP_006686288.1': 0, 'WP_014007498.1': 0, 'WP_044390253.1': 0, 'WP_034622813.1': 0, 'WP_047597435.1': 0, 'WP_110123529.1': 1, 'WP_016162495.1': 0, 'WP_000778180.1': 0, 'WP_001417211.1': 0, 'WP_000239590.1': 1, 'WP_004910271.1': 0, 'WP_020914447.1': 0, 'WP_032037742.1': 0, 'WP_050534676.1': 0, 'WP_063862728.1': 0, 'WP_007761109.1': 0, 'WP_050073671.1': 0, 'WP_050321664.1': 0, 'WP_046855210.1': 0, 'WP_036948496.1': 0, 'WP_013691409.1': 0,
-... some output omitted ...
+# ... some output omitted ...
 'WP_065872869.1': 0, 'WP_025395172.1': 0, 'WP_050088644.1': 0, 'WP_037140816.1': 0, 'WP_013983315.1': 0, 'WP_011860820.1': 0, 'WP_050335261.1': 0, 'WP_005111907.1': 0, 'WP_065878451.1': 0, 'WP_045460298.1': 0, 'WP_072078020.1': 0, 'WP_039496288.1': 0, 'WP_004923631.1': 0, 'WP_032009364.1': 0, 'WP_042560048.1': 0, 'WP_072089562.1': 0, 'WP_060769150.1': 0, 'WP_045149331.1': 0, 'WP_029307868.1': 0, 'WP_020835015.1': 1, 'WP_020288732.1': 0, 'WP_046101847.1': 0, 'WP_023653734.1': 0, 'WP_047954938.1': 0, 'WP_065909522.1': 0, 'WP_000352430.1': 1, 'WP_063862719.1': 0}
 Score on test data: 0.987116201732058
 ```
