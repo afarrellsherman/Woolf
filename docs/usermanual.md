@@ -42,9 +42,6 @@ FASTA amino acid sequence files:
   -   `ClassBCD_test.fasta`
   -   `unknownClass.fasta`
 
-<!-- NOTE: This folder is not actually empty in the zip you sent me -->
-There is also an empty folder called `CSVfolder`
-for storing the feature tables you will create.
 
 ## Installation
 
