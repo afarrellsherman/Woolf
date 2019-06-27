@@ -52,7 +52,7 @@ def binaryFeatureTable(PosSeqFiles, NegSeqFiles):
 
 	return pd.DataFrame(seqDicts)
 
-### predictDataFeatureTable -
+### predictFeatureTable -
 def predictFeatureTable(sequenceFiles):
 	seqDicts = []
 
