@@ -393,7 +393,7 @@ you may get an error
 because there is not enough training data in each split
 to train the model.
 
-**Scalar Value**
+**Scaler Value**
 
 Scaling is the process of modifying the center and range of the data
 in each feature.
@@ -404,7 +404,7 @@ However, with algorithms like kNNs,
 scaling the data prevents features with different ranges
 from unduly influencing the prediction.
 
-Table 4.2 shows the range of different scalar types
+Table 4.2 shows the range of different scaler types
 and when they might be useful.
 
 **Table 4.2** Possible Scaler Types
@@ -417,7 +417,7 @@ MaxAbsScaler   | Scales each feature to a range between -1 and 1                
 RobustScaler   | Scales using alternative center and range metrics that are robust to outliers | - Data with outliers
 None           | No scaling                                                                    | - Approximately normally distributed data in similar ranges<br>- comparison to other methods
 
-To change the scalar type from the default Min-Max Scalar to the Standard Scalar,
+To change the scaler type from the default Min-Max Scaler to the Standard Scaler,
 use this command:
 
 ```sh
